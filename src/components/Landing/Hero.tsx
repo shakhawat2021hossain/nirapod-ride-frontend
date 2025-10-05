@@ -68,7 +68,7 @@ const Hero = () => {
                         <div className="space-y-6">
                             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">
                                 Smart Ride
-                                <span className="block bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                                <span className="block bg-gradient-to-r from-primary to-purple-600 pb-3 bg-clip-text text-transparent">
                                     Management
                                 </span>
                             </h1>

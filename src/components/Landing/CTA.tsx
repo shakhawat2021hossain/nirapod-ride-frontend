@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 const CTA = () => {
     return (
         <section className="my-16 py-20 bg-gradient-to-r from-primary to-purple-600 text-white rounded-lg">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="sm:px-6 text-center">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-4">
                     Ready to Get Started?
                 </h2>

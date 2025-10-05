@@ -1,13 +1,14 @@
-// components/landing/Footer.tsx
+import Logo from '../../assets/nirapod-ride.png'
+
 const Footer = () => {
     return (
         <footer className="bg-muted/50 border-t">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-7xl mx-auto sm:px-6  py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Company Info */}
                     <div className="md:col-span-2">
                         <div className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-4">
-                            RideHub
+                            <img className="h-16" src={Logo} />
                         </div>
                         <p className="text-muted-foreground max-w-md">
                             Revolutionizing urban mobility with cutting-edge technology and

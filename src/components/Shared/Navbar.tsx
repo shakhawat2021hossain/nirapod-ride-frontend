@@ -11,10 +11,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Link, NavLink } from "react-router-dom"
+import Logo from '../../assets/nirapod-ride.png'
+import { ModeToggle } from "../ui/mode-toggle"
+
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", active: true },
+  { href: "/", label: "Home" },
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
@@ -22,7 +25,7 @@ const navigationLinks = [
 
 export default function Navbar() {
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 transition-all duration-200">
       <div className="flex max-w-7xl mx-auto h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -70,10 +73,15 @@ export default function Navbar() {
                         asChild
                         className="py-1.5"
                       >
-                        {/* TODO: active={link.active} */}
-                        <Link to={link.href} >
+                        <NavLink
+                          to={link.href}
+                          className={({ isActive }) =>
+                            `block w-full px-2 transition-colors hover:text-primary ${isActive ? 'text-primary font-medium' : 'text-muted-foreground'
+                            }`
+                          }
+                        >
                           {link.label}
-                        </Link>
+                        </NavLink>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -83,20 +91,20 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Link to={'/'} className="text-primary hover:text-primary/90">
-              <h1 className="font-semibold text-xl">Nirapod Ride</h1>
+            <Link to={'/'} className="hover:opacity-90 transition-opacity">
+              <img className="h-16 w-auto" src={Logo} alt="Nirapod Ride" />
             </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
+              <NavigationMenuList className="gap-6">
                 {navigationLinks.map((link, index) => (
                   <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      <NavLink to={link.href} 
+                    <NavigationMenuLink asChild>
+                      <NavLink
+                        to={link.href}
                         className={({ isActive }) =>
-                          isActive ? 'text-primary' : ''
+                          `py-1.5 font-medium transition-colors hover:text-primary ${isActive ? 'text-primary' : 'text-muted-foreground'
+                          }`
                         }
                       >
                         {link.label}
@@ -109,9 +117,16 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
-          <Button asChild size="sm" className="text-sm">
+        <div className="flex items-center gap-3">
+
+          <Button asChild variant="ghost" size="sm" className="text-sm">
+            <ModeToggle />
+          </Button>
+          <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link to={'/login'}>Sign In</Link>
+          </Button>
+          <Button asChild size="sm" className="text-sm">
+            <Link to={'/register'}>Get Started</Link>
           </Button>
         </div>
       </div>
