@@ -15,7 +15,6 @@ import Logo from '../../assets/nirapod-ride.png'
 import { ModeToggle } from "../ui/mode-toggle"
 
 
-// Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/features", label: "Features" },
