@@ -6,6 +6,7 @@ import Features from "@/pages/Features";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import BookRide from "@/pages/Rider/BookRide";
 import { createBrowserRouter } from "react-router-dom";
 export const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path: '/faq',
                 element: <FAQ />
+            },
+            {
+                path: '/book-ride',
+                element: <BookRide />
             },
         ]
     },
