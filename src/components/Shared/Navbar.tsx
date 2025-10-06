@@ -18,8 +18,9 @@ import { ModeToggle } from "../ui/mode-toggle"
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/features", label: "Features" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/contact", label: "Contact" },
   { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQ" },
 ]
 
 export default function Navbar() {

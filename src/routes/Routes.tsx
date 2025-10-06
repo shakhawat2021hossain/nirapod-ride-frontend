@@ -1,4 +1,8 @@
 import MainLayout from "@/layout/MainLayout";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import Features from "@/pages/Features";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -11,7 +15,23 @@ export const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />
-            }
+            },
+            {
+                path: '/about',
+                element: <About />
+            },
+            {
+                path: '/Features',
+                element: <Features />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
+            },
+            {
+                path: '/faq',
+                element: <FAQ />
+            },
         ]
     },
     {
