@@ -3,20 +3,20 @@ import { baseApi } from "@/redux/baseApi";
 const authApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         register: build.mutation({
-            query: (data) => ({
+            query: (userInfo) => ({
                 url: '/auth/register',
                 method: 'POST',
-                body: data,
+                data: userInfo,
             })
         }),
         login: build.mutation({
-            query: (data) =>({
+            query: (userInfo) =>({
                 url: "/auth/login",
                 method: "POST",
-                body: data,
+                data: userInfo,
             })
         })
     })
 })
 
-export const { useRegisterMutation } = authApi
+export const { useRegisterMutation, useLoginMutation } = authApi

@@ -1,6 +1,7 @@
 import axios from "axios";
 export const axiosInstance = axios.create({
     baseURL: "https://nirapod-ride.vercel.app/api/v1",
+    withCredentials: true,
 });
 
 // Add a request interceptor

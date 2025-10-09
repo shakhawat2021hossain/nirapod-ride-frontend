@@ -19,7 +19,7 @@ export const registerSchema = z.object({
         .string()
         .min(6, { message: "Please confirm your password." }),
     role: z
-        .enum(["rider", "driver"]),
+        .enum(["RIDER", "DRIVER"]),
     phone: z
         .string()
         .min(10, { message: "Please enter a valid phone number." }),

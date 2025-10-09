@@ -7,8 +7,11 @@ import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginFormData } from '@/types/auth.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useLoginMutation } from '@/redux/features/auth/auth.api';
 
 const Login = () => {
+    const [login] = useLoginMutation()
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -17,9 +20,11 @@ const Login = () => {
         }
     });
 
-    const onSubmit = (data: LoginFormData) => {
+    const onSubmit = async(data: LoginFormData) => {
         console.log("Login data:", data);
-        // TODO: Implement login API call
+        const result =  await login(data)
+        console.log(result);
+        toast.success("Login successful")
     };
 
     return (
