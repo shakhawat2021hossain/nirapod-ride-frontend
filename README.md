@@ -1,7 +1,7 @@
 # 🚖 Ride Management System – Frontend (React + Redux Toolkit + RTK Query)
 
 ### 🔗 Live Deployment  
-👉 [Visit Live Site](https://your-live-link.vercel.app/)  
+👉 [Visit Live Site](https://nirapod-ride-frontend.vercel.app/)  
 *(Replace with your actual deployment link)*
 
 ---
