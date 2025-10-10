@@ -1,69 +1,99 @@
-# React + TypeScript + Vite
+# 🚖 Nirapord Ride (A Ride Management System)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 🔗 Live Deployment: https://nirapod-ride-frontend.vercel.app/  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧭 Project Overview
 
-## Expanding the ESLint configuration
+**Ride Management System** is a fully responsive, role-based ride booking platform inspired by Uber and Pathao.  
+It allows **Riders**, **Drivers**, and **Admins** to seamlessly interact through a clean and intuitive interface — from booking rides to managing operations and analyzing ride data.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project focuses on building a **production-grade frontend** using **React, Redux Toolkit, and RTK Query**, ensuring efficient state management, secure authentication, and smooth user experience across all devices.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ✨ Core Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🌍 Public Experience
+- Beautiful landing page with **5+ structured sections** (Hero, Features, Testimonials, FAQ, etc.)
+- **About Us**, **Features**, **Contact**, and **FAQ** pages
+- Responsive **navbar** and **footer** with consistent design
+- Accessibility and performance optimized (lazy-loading + skeleton loaders)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 👤 Authentication & Authorization
+- **JWT-based authentication**
+- **Role-based login & registration** for Rider, Driver, and Admin
+- Role-based **dashboard redirects** after login
+- **Persistent login state**
+- Blocked/Suspended account redirection
+- Logout functionality
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+### 🚗 Rider Dashboard
+- **Request Ride:** Pickup, destination, fare estimate, payment selection  
+- **Ride History:** Paginated, searchable, and filterable  
+- **Ride Details:** timestamps, and driver info  
+- **Profile Management:** Edit name, phone, and change password 
+
+---
+
+### 🧍‍♂️ Driver Dashboard
+- **Online/Offline toggle** (to control ride availability)  
+- **Incoming Ride Requests:** Accept or reject rides  
+- **Active Ride Management:** Track status – *Accepted → Picked Up → In Transit → Completed*  
+- **Earnings Dashboard:** Charts and visual data (daily, weekly, monthly)  
+- **Ride History:** Paginated and filterable  
+- **Profile Management:** Update vehicle info and password  
+
+---
+
+### 🛠️ Admin Dashboard
+- **User Management:** Search, filter, block/unblock riders, approve/suspend drivers  
+- **Ride Oversight:** View and filter all rides by date, status, or user  
+- **Analytics Dashboard:** Charts showing ride volume, revenue, and driver activity  
+- **Profile Management:** Update profile and password  
+- **Global Search & Filter tools**  
+
+---
+
+### 🆘 SOS / Emergency System (Bonus Feature)
+Enhances user safety by allowing riders and drivers to **quickly call for help** during active rides.
+
+- Floating **SOS button** visible only during rides  
+- **Emergency Options:** Call police, notify contacts, share live location  
+- **Pre-set Emergency Contact** in user settings  
+- **Automatic location sharing** via map API or messaging (WhatsApp, SMS)  
+- **Visual feedback** confirmation (“Emergency contact notified!”)
+
+---
+
+### 💎 General UI/UX Enhancements
+- Role-based navigation and profile dropdown  
+- Interactive carousels, cards, and charts  
+- Smooth transitions, skeleton loaders, and global error handling  
+- Accessibility-compliant and semantic HTML  
+- No broken links or placeholder text  
+- **Toast notifications** for success/error using `react-hot-toast`  
+- Lazy-loaded maps and charts  
+
+---
+
+## 🧩 Technology Stack
+
+| Category | Tools / Libraries |
+|-----------|-------------------|
+| **Frontend Framework** | React.js (with React Router) |
+| **State Management** | Redux Toolkit, RTK Query |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS, ShadCN |
+| **Charts & Visualization** | Recharts |
+| **Authentication** | JWT + bcrypt (via backend) |
+| **Backend (API)** | Node.js, Express.js, MongoDB |
+
+---
+
+## ⚙️ Setup Instructions
