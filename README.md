@@ -2,8 +2,6 @@
 
 ### 🔗 Live Deployment  
 👉 [Visit Live Site](https://nirapod-ride-frontend.vercel.app/)  
-*(Replace with your actual deployment link)*
-
 ---
 
 ## 🧭 Project Overview
