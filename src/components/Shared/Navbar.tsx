@@ -11,9 +11,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Link, NavLink } from "react-router-dom"
-import Logo from '../../assets/nirapod-ride.png'
+import Logo from "../../assets/nirapod-ride.png"
 import { ModeToggle } from "../ui/mode-toggle"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
+// import InfoMenu from "@/components/info-menu"
+// import NotificationMenu from "@/components/notification-menu"
+import UserMenu from "@/components/user-menu"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -24,6 +28,10 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined)
+  const userEmail = data?.data?.email;
+  const userInfo = data?.data
+
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 transition-all duration-200">
       <div className="flex max-w-7xl mx-auto h-16 items-center justify-between gap-4">
@@ -69,14 +77,13 @@ export default function Navbar() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        asChild
-                        className="py-1.5"
-                      >
+                      <NavigationMenuLink asChild className="py-1.5">
                         <NavLink
                           to={link.href}
                           className={({ isActive }) =>
-                            `block w-full px-2 transition-colors hover:text-primary ${isActive ? 'text-primary font-medium' : 'text-muted-foreground'
+                            `block w-full px-2 transition-colors hover:text-primary ${isActive
+                              ? "text-primary font-medium"
+                              : "text-muted-foreground"
                             }`
                           }
                         >
@@ -89,12 +96,14 @@ export default function Navbar() {
               </NavigationMenu>
             </PopoverContent>
           </Popover>
+
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Link to={'/'} className="hover:opacity-90 transition-opacity">
+            <Link to={"/"} className="hover:opacity-90 transition-opacity">
               <img className="h-16 w-auto" src={Logo} alt="Nirapod Ride" />
             </Link>
-            {/* Navigation menu */}
+
+            {/* Desktop navigation */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-6">
                 {navigationLinks.map((link, index) => (
@@ -103,7 +112,9 @@ export default function Navbar() {
                       <NavLink
                         to={link.href}
                         className={({ isActive }) =>
-                          `py-1.5 font-medium transition-colors hover:text-primary ${isActive ? 'text-primary' : 'text-muted-foreground'
+                          `py-1.5 font-medium transition-colors hover:text-primary ${isActive
+                            ? "text-primary"
+                            : "text-muted-foreground"
                           }`
                         }
                       >
@@ -116,18 +127,43 @@ export default function Navbar() {
             </NavigationMenu>
           </div>
         </div>
+
         {/* Right side */}
         <div className="flex items-center gap-3">
+          <ModeToggle />
 
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <ModeToggle />
-          </Button>
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <Link to={'/login'}>Sign In</Link>
-          </Button>
-          <Button asChild size="sm" className="text-sm">
-            <Link to={'/register'}>Get Started</Link>
-          </Button>
+
+          {/* If user is logged in */}
+          {userEmail ? (
+            <div className="flex items-center gap-3">
+              {/* Optional: Info and Notification menus */}
+              {/* <InfoMenu /> */}
+              {/* <NotificationMenu /> */}
+              {/* User avatar dropdown */}
+              <Button
+                asChild
+                variant="default"
+                size="sm"
+                className="text-sm font-medium"
+              >
+                <Link to="/book-ride">Book a Ride</Link>
+              </Button>
+              <UserMenu name={userInfo.name} email={userInfo.email} />
+            </div>
+          ) : (
+            // If not logged in
+            <>
+
+              <Button
+                asChild
+                variant="default"
+                size="sm"
+                className="text-sm font-medium"
+              >
+                <Link to={"/login"}>Login</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>

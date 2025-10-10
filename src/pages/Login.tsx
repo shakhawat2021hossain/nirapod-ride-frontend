@@ -6,12 +6,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginFormData } from '@/types/auth.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useLoginMutation } from '@/redux/features/auth/auth.api';
 
 const Login = () => {
     const [login] = useLoginMutation()
+    const navigate = useNavigate()
+
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -25,6 +27,7 @@ const Login = () => {
         const result =  await login(data)
         console.log(result);
         toast.success("Login successful")
+        navigate("/")
     };
 
     return (
