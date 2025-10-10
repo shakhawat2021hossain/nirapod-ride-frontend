@@ -1,7 +1,6 @@
-# 🚖 Ride Management System – Frontend (React + Redux Toolkit + RTK Query)
+# 🚖 Nirapord Ride (A Ride Management System)
 
-### 🔗 Live Deployment  
-👉 [Visit Live Site](https://nirapod-ride-frontend.vercel.app/)  
+### 🔗 Live Deployment: https://nirapod-ride-frontend.vercel.app/  
 
 ---
 
@@ -31,16 +30,14 @@ This project focuses on building a **production-grade frontend** using **React, 
 - **Persistent login state**
 - Blocked/Suspended account redirection
 - Logout functionality
-- (Optional) **Google/Facebook login integration**
 
 ---
 
 ### 🚗 Rider Dashboard
 - **Request Ride:** Pickup, destination, fare estimate, payment selection  
 - **Ride History:** Paginated, searchable, and filterable  
-- **Ride Details:** Route map (optional), timestamps, and driver info  
-- **Profile Management:** Edit name, phone, and change password  
-- (Optional) **Live ride tracking** on a map  
+- **Ride Details:** timestamps, and driver info  
+- **Profile Management:** Edit name, phone, and change password 
 
 ---
 
@@ -92,13 +89,10 @@ Enhances user safety by allowing riders and drivers to **quickly call for help**
 | **Frontend Framework** | React.js (with React Router) |
 | **State Management** | Redux Toolkit, RTK Query |
 | **Language** | TypeScript |
-| **Styling** | Tailwind CSS, DaisyUI (optional) |
+| **Styling** | Tailwind CSS, ShadCN |
 | **Charts & Visualization** | Recharts |
-| **Notifications** | react-hot-toast |
-| **Maps (Optional)** | Leaflet / Google Maps API |
 | **Authentication** | JWT + bcrypt (via backend) |
 | **Backend (API)** | Node.js, Express.js, MongoDB |
-| **Deployment** | Vercel (Frontend), Render/Vercel (Backend) |
 
 ---
 
