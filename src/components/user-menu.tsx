@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { authApi, useLogOutMutation } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 type userProps = {
   name: string;
@@ -34,6 +35,9 @@ export default function UserMenu({ name, email, photo }: userProps) {
   const handleLogout = async() =>{
     const result = await logOut(undefined)
     console.log(result);
+    toast.success("Logged out successfully")
+
+    // logout clear api state (jate kore login er r data thakbe na)
     dispatch(authApi.util.resetApiState())
 
 

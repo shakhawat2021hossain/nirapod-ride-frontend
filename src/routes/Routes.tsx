@@ -1,6 +1,11 @@
+import DashboardLayout from "@/layout/DashboardLayout";
 import MainLayout from "@/layout/MainLayout";
 import About from "@/pages/About";
+import Analytics from "@/pages/Admin/Analytics";
+import RideHistory from "@/pages/Common/RideHistory";
 import Contact from "@/pages/Contact";
+import Earnings from "@/pages/Driver/Earnings";
+import RideRequests from "@/pages/Driver/RideRequests";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
 import Home from "@/pages/Home";
@@ -42,6 +47,41 @@ export const router = createBrowserRouter([
     {
         path: '/login',
         element: <Login />
+    },
+    {
+        path: '/admin',
+        element: <DashboardLayout />,
+        children: [
+            {
+                path: "analytics",
+                element: <Analytics />
+            }
+        ]
+    },
+    {
+        path: '/driver',
+        element: <DashboardLayout />,
+        children: [
+            {
+                path: "earnings",
+                element: <Earnings />
+            },
+            {
+                path: "ride-requests",
+                element: <RideRequests />
+            },
+        ]
+    },
+    {
+        path: '/rider',
+        element: <DashboardLayout />,
+        children: [
+            {
+                path: "ride-history",
+                element: <RideHistory />
+            },
+
+        ]
     },
     {
         path: '/register',
