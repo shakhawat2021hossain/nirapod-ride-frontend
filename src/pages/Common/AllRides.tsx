@@ -1,4 +1,5 @@
-const RideHistory = () => {
+const AllRides = () => {
+    
     return (
         <div>
             Ride History Page
@@ -6,4 +7,4 @@ const RideHistory = () => {
     );
 };
 
-export default RideHistory;
+export default AllRides;

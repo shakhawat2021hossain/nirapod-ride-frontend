@@ -16,6 +16,7 @@ import { riderSidebarRoutes } from "./riderSidebarRoutes";
 import NotFound from "@/pages/NotFound";
 import RoleBasedAccess from "./RoleBasedAccess";
 import { roles } from "@/constants/role";
+import RideDetails from "@/pages/Rider/RideDetails";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
             {
                 path: '/book-ride',
                 element: <RoleBasedAccess><BookRide /></RoleBasedAccess>
+            },
+            {
+                path: '/ride-details',
+                element: <RideDetails/>
             },
         ]
     },

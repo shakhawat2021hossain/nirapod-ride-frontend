@@ -15,8 +15,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { rideSchema, type RideFormValues } from "@/types/ride.type";
 import { MapPin, Navigation, Clock, DollarSign, Car, CreditCard, Smartphone } from 'lucide-react';
+import { useBookMutation } from "@/redux/features/rider/ride.api";
+import { toast } from "sonner";
 
 export default function BookRide() {
+
+  const [book] = useBookMutation()
+
   const [fare, setFare] = useState<number | null>(null);
   const [estimatedTime, setEstimatedTime] = useState<string>("");
   const [isCalculating, setIsCalculating] = useState(false);
@@ -24,28 +29,28 @@ export default function BookRide() {
   const form = useForm<RideFormValues>({
     resolver: zodResolver(rideSchema),
     defaultValues: {
-      pickup: "",
-      destination: "",
+      startLocation: "",
+      endLocation: "",
       payment: "cash",
     },
   });
 
   // Enhanced Fare Estimation with realistic calculation
   useEffect(() => {
-    const { pickup, destination } = form.getValues();
-    
-    if (pickup && destination && pickup.length > 3 && destination.length > 3) {
+    const { startLocation, endLocation } = form.getValues();
+
+    if (startLocation && endLocation && startLocation.length > 3 && endLocation.length > 3) {
       setIsCalculating(true);
-      
+
       // Simulate API call delay
       const timer = setTimeout(() => {
         const baseFare = 60;
         const distanceMultiplier = Math.floor(Math.random() * 40) + 20; // 20-60 Taka
         const timeMultiplier = Math.floor(Math.random() * 20) + 10; // 10-30 Taka
         const estimated = baseFare + distanceMultiplier + timeMultiplier;
-        
+
         setFare(estimated);
-        
+
         // Estimate time (5-25 minutes)
         const time = Math.floor(Math.random() * 20) + 5;
         setEstimatedTime(`${time} min`);
@@ -57,36 +62,33 @@ export default function BookRide() {
       setFare(null);
       setEstimatedTime("");
     }
-  }, [form.watch('pickup'), form.watch('destination')]);
+  }, [form.watch('startLocation'), form.watch('endLocation')]);
 
-  const onSubmit = (data: RideFormValues) => {
-    const rideData = {
-      ...data,
-      fare,
-      estimatedTime,
-      rideType: 'standard',
-      timestamp: new Date().toISOString()
-    };
-    
-    console.log('Ride booked:', rideData);
-    
-    alert(
-      `🚗 Ride Booked Successfully!\n\n📍 Pickup: ${data.pickup}\n🎯 Destination: ${data.destination}\n💰 Fare: ৳${fare}\n⏰ Estimated Time: ${estimatedTime}\n💳 Payment: ${getPaymentMethodLabel(data.payment)}`
-    );
-    
-    form.reset();
-    setFare(null);
-    setEstimatedTime("");
+  const onSubmit = async (data: RideFormValues) => {
+    try {
+      const rideBody = {
+        ...data,
+        fare,
+      };
+
+      // console.log("Sending ride body:", rideBody);
+
+      const result = await book(rideBody).unwrap();
+      console.log("Ride booked successfully:", result);
+
+      toast.success("Ride Booked Successfully");
+      toast.success("Wait for the rider...");
+      form.reset();
+      setFare(null);
+      setEstimatedTime("");
+    } catch (error) {
+      console.error("Booking ride failed:", error);
+      toast.error("Failed to book ride");
+    }
   };
 
-  const getPaymentMethodLabel = (method: string) => {
-    const labels: { [key: string]: string } = {
-      cash: "Cash",
-      card: "Credit/Debit Card",
-      bkash: "bKash"
-    };
-    return labels[method] || method;
-  };
+
+
 
   const paymentMethods = [
     {
@@ -134,22 +136,22 @@ export default function BookRide() {
                 Enter your locations to get started
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  
+
                   {/* Location Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <h3 className="font-semibold text-lg">Location Details</h3>
                     </div>
-                    
+
                     {/* Pickup Location */}
                     <FormField
                       control={form.control}
-                      name="pickup"
+                      name="startLocation"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="flex items-center gap-2 text-base font-medium">
@@ -157,8 +159,8 @@ export default function BookRide() {
                             Pickup Location
                           </FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Enter your pickup address" 
+                            <Input
+                              placeholder="Enter your pickup address"
                               {...field}
                               className="h-14 text-lg px-4"
                             />
@@ -171,7 +173,7 @@ export default function BookRide() {
                     {/* Destination */}
                     <FormField
                       control={form.control}
-                      name="destination"
+                      name="endLocation"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="flex items-center gap-2 text-base font-medium">
@@ -179,8 +181,8 @@ export default function BookRide() {
                             Destination
                           </FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Where are you going?" 
+                            <Input
+                              placeholder="Where are you going?"
                               {...field}
                               className="h-14 text-lg px-4"
                             />
@@ -228,7 +230,7 @@ export default function BookRide() {
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <h3 className="font-semibold text-lg">Payment Method</h3>
                     </div>
-                    
+
                     <FormField
                       control={form.control}
                       name="payment"
@@ -243,21 +245,19 @@ export default function BookRide() {
                               {paymentMethods.map((method) => {
                                 const IconComponent = method.icon;
                                 const isSelected = field.value === method.value;
-                                
+
                                 return (
                                   <div key={method.value}>
                                     <RadioGroupItem value={method.value} id={method.value} className="sr-only" />
                                     <FormLabel
                                       htmlFor={method.value}
-                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all h-full ${
-                                        isSelected
+                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all h-full ${isSelected
                                           ? 'border-primary bg-primary/5 shadow-md'
                                           : 'border-muted hover:border-muted-foreground/30 hover:bg-muted/50'
-                                      }`}
+                                        }`}
                                     >
-                                      <div className={`p-3 rounded-lg mb-2 ${
-                                        isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                                      }`}>
+                                      <div className={`p-3 rounded-lg mb-2 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                                        }`}>
                                         <IconComponent className="h-6 w-6" />
                                       </div>
                                       <div className="text-center">
@@ -278,8 +278,8 @@ export default function BookRide() {
 
                   {/* Submit Button */}
                   <div className="pt-4">
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={!form.formState.isValid || isCalculating}
                       className="w-full py-7 text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg hover:shadow-xl transition-all"
                     >

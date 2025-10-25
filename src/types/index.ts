@@ -1,13 +1,17 @@
-type item = {
-    title: string;
-    url: string;
-    element?: React.ReactNode;
-}
+import type { LucideIcon } from "lucide-react";
+
+// type item = {
+//     title: string;
+//     url: string;
+    
+// }
  
 export interface ISidebarItem {
     title: string;
     url: string;
-    items: item[];
+    element?: React.ReactNode;
+    icon: LucideIcon;
+    badge?: string | null;
 }
 
 export type TRole = "ADMIN" | "DRIVER" | "RIDER";
