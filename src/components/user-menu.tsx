@@ -19,9 +19,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { authApi, useLogOutMutation } from "@/redux/features/auth/auth.api";
+import { authApi, useLogOutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import { NavLink } from "react-router-dom";
+import { roles } from "@/constants/role";
 
 type userProps = {
   name: string;
@@ -31,8 +33,12 @@ type userProps = {
 
 export default function UserMenu({ name, email, photo }: userProps) {
   const [logOut] = useLogOutMutation()
+  const { data: userData } = useUserInfoQuery(undefined)
+  console.log(userData);
+  const dashboardLink = userData?.data?.role === roles.admin ? '/admin' : userData?.data?.role === roles.driver ? '/driver' : '/rider';
+
   const dispatch = useDispatch()
-  const handleLogout = async() =>{
+  const handleLogout = async () => {
     const result = await logOut(undefined)
     console.log(result);
     toast.success("Logged out successfully")
@@ -40,8 +46,9 @@ export default function UserMenu({ name, email, photo }: userProps) {
     // logout clear api state (jate kore login er r data thakbe na)
     dispatch(authApi.util.resetApiState())
 
-
   }
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -70,7 +77,9 @@ export default function UserMenu({ name, email, photo }: userProps) {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Dashboard</span>
+           
+              <NavLink to={dashboardLink} className="">Dashboard</NavLink>
+            
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />

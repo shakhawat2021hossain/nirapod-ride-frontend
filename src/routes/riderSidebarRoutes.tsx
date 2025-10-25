@@ -1,4 +1,8 @@
 import type { ISidebarItem } from "@/types";
+import { lazy } from "react";
+
+const RideDetails = lazy(() =>import("@/pages/Rider/RideDetails"))
+
 
 export const riderSidebarRoutes: ISidebarItem[] = [
     {
@@ -18,7 +22,8 @@ export const riderSidebarRoutes: ISidebarItem[] = [
         items: [
             {
                 title: "Rides History",
-                url: "/rider/rides",
+                url: "/rider/ride-details",
+                element: <RideDetails/>,
             },
         ],
     },

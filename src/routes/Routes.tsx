@@ -9,10 +9,13 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import BookRide from "@/pages/Rider/BookRide";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { adminSidebarRoutes } from "./adminSidebarRoutes";
 import { driverSidebarRoutes } from "./driverSidebarRoutes";
 import { riderSidebarRoutes } from "./riderSidebarRoutes";
+import NotFound from "@/pages/NotFound";
+import RoleBasedAccess from "./RoleBasedAccess";
+import { roles } from "@/constants/role";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -36,17 +39,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/faq',
-                element: <FAQ />
+                element: <RoleBasedAccess><FAQ /></RoleBasedAccess>
             },
             {
                 path: '/book-ride',
-                element: <BookRide />
+                element: <RoleBasedAccess><BookRide /></RoleBasedAccess>
             },
         ]
     },
     {
         path: '/admin',
-        element: <DashboardLayout />,
+        element: <RoleBasedAccess allowedRoles={[roles.admin]}><DashboardLayout /></RoleBasedAccess>,
         children: [...generateRoutes(adminSidebarRoutes)]
     },
     {
@@ -57,7 +60,13 @@ export const router = createBrowserRouter([
     {
         path: '/rider',
         element: <DashboardLayout />,
-        children: [...generateRoutes(riderSidebarRoutes)]
+        children: [
+            {
+                index: true,
+                element: <Navigate to='/rider/overview' />
+            },
+            ...generateRoutes(riderSidebarRoutes)
+        ]
     },
     {
         path: '/register',
@@ -67,5 +76,10 @@ export const router = createBrowserRouter([
         path: '/login',
         element: <Login />
     },
+    {
+        path: "*",
+        element: <NotFound />,
+    },
+
 ])
 
