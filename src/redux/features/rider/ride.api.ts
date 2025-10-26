@@ -9,6 +9,13 @@ export const rideApi = baseApi.injectEndpoints({
             }),
             providesTags: ["RIDE"]
         }),
+        getRideById: build.query({
+            query: (id) => ({
+                url: `/ride/${id}`,
+                method: "GET"
+            }),
+            providesTags: ["RIDE"]
+        }),
         book: build.mutation({
             query: (rideData) => ({
                 url: "/ride/request",
@@ -20,4 +27,4 @@ export const rideApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useRidesQuery, useBookMutation } = rideApi
+export const { useRidesQuery, useBookMutation, useGetRideByIdQuery } = rideApi

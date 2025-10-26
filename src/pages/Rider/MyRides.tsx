@@ -15,7 +15,7 @@ import {
     Eye
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRidesQuery } from '@/redux/features/rider/ride.api';
 
 interface Ride {
@@ -32,8 +32,8 @@ const MyRides = () => {
     const { data: myRidesData, isLoading } = useRidesQuery(undefined);
     const navigate = useNavigate();
 
-    // Extract rides data from API response
     const myRides = myRidesData?.data || [];
+    console.log(myRides)
 
     const [filteredRides, setFilteredRides] = useState<Ride[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -45,60 +45,60 @@ const MyRides = () => {
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
     // Apply filters and search
-    useEffect(() => {
-        if (!myRides || myRides.length === 0) {
-            setFilteredRides([]);
-            return;
-        }
+    // useEffect(() => {
+    //     if (!myRides || myRides.length === 0) {
+    //         setFilteredRides([]);
+    //         return;
+    //     }
 
-        let result = [...myRides];
+    //     let result = [...myRides];
 
-        // Search filter
-        if (searchQuery) {
-            result = result.filter(ride =>
-                ride.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                ride.endLocation.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-        }
+    //     // Search filter
+    //     if (searchQuery) {
+    //         result = result.filter(ride =>
+    //             ride.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //             ride.endLocation.toLowerCase().includes(searchQuery.toLowerCase())
+    //         );
+    //     }
 
-        // Status filter
-        if (statusFilter !== 'all') {
-            result = result.filter(ride => ride.status === statusFilter);
-        }
+    //     // Status filter
+    //     if (statusFilter !== 'all') {
+    //         result = result.filter(ride => ride.status === statusFilter);
+    //     }
 
-        // Fare range filter
-        if (fareRange.min) {
-            result = result.filter(ride => ride.fare >= parseInt(fareRange.min));
-        }
-        if (fareRange.max) {
-            result = result.filter(ride => ride.fare <= parseInt(fareRange.max));
-        }
+    //     // Fare range filter
+    //     if (fareRange.min) {
+    //         result = result.filter(ride => ride.fare >= parseInt(fareRange.min));
+    //     }
+    //     if (fareRange.max) {
+    //         result = result.filter(ride => ride.fare <= parseInt(fareRange.max));
+    //     }
 
-        // Sort data
-        result.sort((a, b) => {
-            const aValue = a[sortField];
-            const bValue = b[sortField];
+    //     // Sort data
+    //     result.sort((a, b) => {
+    //         const aValue = a[sortField];
+    //         const bValue = b[sortField];
 
-            if (sortField === 'requestedAt') {
-                const aDate = new Date(aValue as string);
-                const bDate = new Date(bValue as string);
-                return sortDirection === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
-            }
+    //         if (sortField === 'requestedAt') {
+    //             const aDate = new Date(aValue as string);
+    //             const bDate = new Date(bValue as string);
+    //             return sortDirection === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
+    //         }
 
-            if (typeof aValue === 'number' && typeof bValue === 'number') {
-                return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-            }
+    //         if (typeof aValue === 'number' && typeof bValue === 'number') {
+    //             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    //         }
 
-            if (typeof aValue === 'string' && typeof bValue === 'string') {
-                return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-            }
+    //         if (typeof aValue === 'string' && typeof bValue === 'string') {
+    //             return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    //         }
 
-            return 0;
-        });
+    //         return 0;
+    //     });
 
-        setFilteredRides(result);
-        setCurrentPage(1);
-    }, [searchQuery, statusFilter, fareRange, myRides, sortField, sortDirection]);
+    //     setFilteredRides(result);
+    //     setCurrentPage(1);
+    // }, [searchQuery, statusFilter, fareRange, myRides, sortField, sortDirection]);
 
     // Pagination
     const totalPages = Math.ceil(filteredRides.length / itemsPerPage);
@@ -289,8 +289,8 @@ const MyRides = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y">
-                                    {currentRides.length > 0 ? (
-                                        currentRides.map((ride) => (
+                                    {myRides.length > 0 ? (
+                                        myRides.map((ride: Ride) => (
                                             <tr key={ride._id} className="hover:bg-muted/30 transition-colors">
                                                 <td className="p-4">
                                                     <div className="font-medium">
@@ -319,15 +319,18 @@ const MyRides = () => {
                                                     {getStatusBadge(ride.status, ride.isCancelled)}
                                                 </td>
                                                 <td className="p-4">
-                                                    <Button
-                                                        onClick={() => handleViewDetails(ride._id)}
-                                                        variant="outline"
-                                                        size="sm"
-                                                        className="gap-2"
-                                                    >
-                                                        <Eye className="h-4 w-4" />
-                                                        Details
-                                                    </Button>
+                                                    <Link to={`/rider/rides/${ride._id}`}>
+                                                        <Button
+                                                            onClick={() => handleViewDetails(ride._id)}
+                                                            variant="outline"
+                                                            size="sm"
+                                                            className="gap-2"
+                                                        >
+                                                            <Eye className="h-4 w-4" />
+                                                            Details
+
+                                                        </Button>
+                                                    </Link>
                                                 </td>
                                             </tr>
                                         ))

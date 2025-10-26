@@ -1,4 +1,3 @@
-// components/AppSidebar.tsx
 import * as React from "react"
 import {
   Sidebar,
@@ -16,7 +15,7 @@ import {
   Home
 } from 'lucide-react'
 import logo from "../assets/nirapod-ride.png"
-import { NavLink, useLocation, useNavigate } from "react-router-dom"
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
 import { authApi, useLogOutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
 import { getSidebarItems } from "@/utils/getSidebarItems"
 import { toast } from "sonner"
@@ -34,7 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const mainLinks = [
     ...getSidebarItems(data?.data?.role)
   ]
-  console.log("Main Links:", mainLinks);
+  // console.log("Main Links:", mainLinks);
 
   const secondaryLinks = [
     {
@@ -72,11 +71,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props} className="border-r-0 bg-gradient-to-b from-background to-muted/20">
       <SidebarHeader className="border-b py-1 px-6">
         <div className="mx-auto">
-          <img
-            src={logo}
-            alt="Nirapod Ride"
-            className="h-14 w-34"
-          />
+          <Link to={'/'}>
+            <img
+              src={logo}
+              alt="Nirapod Ride"
+              className="h-14 w-34"
+            />
+          </Link>
         </div>
       </SidebarHeader>
 
@@ -99,7 +100,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       }`}
                   >
                     <NavLink to={item.url} className="flex items-center gap-3 py-3 px-3 rounded-lg">
-                      <IconComponent className={`h-5 w-5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
+                      {IconComponent &&
+                        <IconComponent className={`h-5 w-5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
+                      }
                       <span className="font-medium">{item.title}</span>
                       {item.badge && (
                         <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full min-w-6 text-center">
@@ -118,7 +121,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="border-t pt-4">
           <SidebarMenu className="px-3">
             {secondaryLinks.map((item) => {
-              const IconComponent = item.icon;
+              const IconComponent = item?.icon;
               const isActive = isActiveLink(item.url);
 
               return (

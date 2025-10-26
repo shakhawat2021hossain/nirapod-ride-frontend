@@ -7,10 +7,10 @@ import type { LucideIcon } from "lucide-react";
 // }
  
 export interface ISidebarItem {
-    title: string;
+    title?: string;
     url: string;
     element?: React.ReactNode;
-    icon: LucideIcon;
+    icon?: LucideIcon;
     badge?: string | null;
 }
 

@@ -25,51 +25,8 @@ export const riderSidebarRoutes: ISidebarItem[] = [
       element: <MyRides />
     },
     {
-      title: "Ride Details",
-      url: "/rider/ride-details",
-      icon: Car,
-      badge: "12",
+      url: `/rider/rides/:id`,
       element: <RideDetails />
     },
   ]
 
-
-// export const riderSidebarRoutes: ISidebarItem[] = [
-//     {
-//         title: "Dashboard",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "Overview",
-//                 url: "/rider/overview",
-//                 element: <h1>Rider overview</h1>,
-//             }
-//         ],
-//     },
-//     {
-//         title: "My Rides",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "Rides History",
-//                 url: "/rider/ride-details",
-//                 element: <RideDetails/>,
-//             },
-//         ],
-//     },
-//     {
-//         title: "Settings",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "Profile",
-//                 url: "/rider/profile",
-//             },
-//             {
-//                 title: "security",
-//                 url: "/rider/security",
-//             },
-//         ],
-//     },
-    
-// ]
