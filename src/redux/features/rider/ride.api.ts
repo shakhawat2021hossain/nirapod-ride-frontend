@@ -1,5 +1,7 @@
 import { baseApi } from "@/redux/baseApi";
 
+
+
 export const rideApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         rides: build.query({
@@ -9,9 +11,23 @@ export const rideApi = baseApi.injectEndpoints({
             }),
             providesTags: ["RIDE"]
         }),
+        availableRides: build.query({
+            query: () => ({
+                url: '/ride/available-rides',
+                method: "GET"
+            }),
+            providesTags: ["RIDE"]
+        }),
         getRideById: build.query({
             query: (id) => ({
                 url: `/ride/${id}`,
+                method: "GET"
+            }),
+            providesTags: ["RIDE"]
+        }),
+        driverRides: build.query({
+            query: () => ({
+                url: '/ride/driver-rides',
                 method: "GET"
             }),
             providesTags: ["RIDE"]
@@ -24,7 +40,22 @@ export const rideApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["RIDE"]
         }),
+        updateStatus: build.mutation({
+            query: ({status, id}) => ({
+                url: `/ride/${id}/update-status`,
+                method: "PATCH",
+                data: status,
+            }),
+            invalidatesTags: ["RIDE"]
+        }),
+        acceptRide: build.mutation({
+            query: (id) => ({
+                url: `/ride/${id}/accept-ride`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["RIDE"]
+        }),
     })
 })
 
-export const { useRidesQuery, useBookMutation, useGetRideByIdQuery } = rideApi
+export const { useRidesQuery, useBookMutation, useGetRideByIdQuery, useAvailableRidesQuery, useUpdateStatusMutation, useAcceptRideMutation, useDriverRidesQuery } = rideApi

@@ -1,42 +1,33 @@
+import Overview from "@/pages/Admin/Overview";
+import AvailableRides from "@/pages/Driver/AvailableRides";
+import Ongoing from "@/pages/Driver/Ongoing";
 import type { ISidebarItem } from "@/types";
+import {Car, LayoutDashboard, Timer } from "lucide-react";
+
+
+
+
 
 export const driverSidebarRoutes: ISidebarItem[] = [
     {
-        title: "Dashboard",
-        url: "#",
-        items: [
-            {
-                title: "Earnings",
-                url: "/driver/earnings",
-                element: <h1>Driver earnings</h1>,
-            }
-        ],
+      title: "Dashboard",
+      url: "/driver/overview",
+      icon: LayoutDashboard,
+      badge: null,
+      element: <Overview />
     },
     {
-        title: "Ride Management",
-        url: "#",
-        items: [
-            {
-                title: "All Rides",
-                url: "/driver/rides",
-                element: <h1>Rides Management</h1>
-            },
-        ],
+      title: "Available Rides",
+      url: "/driver/available-rides",
+      icon: Car,
+      badge: "12",
+      element: <AvailableRides />
     },
     {
-        title: "Settings",
-        url: "#",
-        items: [
-            {
-                title: "Profile",
-                url: "/driver/profile",
-                element: <h1>Driver Profile</h1>,
-            },
-            {
-                title: "Vehicle Details",
-                url: "/driver/vehicle",
-            },
-        ],
+      title: "Ongoing Ride",
+      url: "/driver/ongoing",
+      icon: Timer,
+      element: <Ongoing />
     },
-    
-]
+  ]
+
