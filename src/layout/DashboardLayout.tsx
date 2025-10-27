@@ -9,12 +9,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ModeToggle } from "@/components/ui/mode-toggle"
 import UserMenu from "@/components/user-menu"
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 import { AppSidebar } from "@/components/app-sidebar"
+import { useUserInfoQuery } from "@/redux/features/user/user.api"
 
 export default function DashboardLayout() {
-  const { data } = useUserInfoQuery(undefined)
-  const userInfo = data?.data
+  const { data: userInfo } = useUserInfoQuery(undefined)
 
   return (
     <SidebarProvider>

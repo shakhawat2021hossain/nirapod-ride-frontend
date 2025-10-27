@@ -1,8 +1,10 @@
-import Overview from "@/pages/Admin/Overview";
 import AvailableRides from "@/pages/Driver/AvailableRides";
+import DriverOverview from "@/pages/Driver/DriverOverview";
+import Earnings from "@/pages/Driver/Earnings";
 import Ongoing from "@/pages/Driver/Ongoing";
+import RideHistory from "@/pages/Driver/RideHistory";
 import type { ISidebarItem } from "@/types";
-import {Car, LayoutDashboard, Timer } from "lucide-react";
+import {Car, Coins, History, LayoutDashboard, Timer } from "lucide-react";
 
 
 
@@ -14,7 +16,7 @@ export const driverSidebarRoutes: ISidebarItem[] = [
       url: "/driver/overview",
       icon: LayoutDashboard,
       badge: null,
-      element: <Overview />
+      element: <DriverOverview />
     },
     {
       title: "Available Rides",
@@ -28,6 +30,18 @@ export const driverSidebarRoutes: ISidebarItem[] = [
       url: "/driver/ongoing",
       icon: Timer,
       element: <Ongoing />
+    },
+    {
+      title: "Ride History",
+      url: "/driver/ride-history",
+      icon: History,
+      element: <RideHistory />
+    },
+    {
+      title: "Earnings",
+      url: "/driver/earnings",
+      icon: Coins,
+      element: <Earnings />
     },
   ]
 

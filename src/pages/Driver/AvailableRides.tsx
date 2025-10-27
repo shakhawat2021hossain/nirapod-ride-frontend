@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { MapPin, Clock, XCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useAcceptRideMutation, useAvailableRidesQuery } from '@/redux/features/rider/ride.api';
 import type { IRide } from '@/types/ride.type';

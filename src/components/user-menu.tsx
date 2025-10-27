@@ -19,11 +19,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { authApi, useLogOutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { authApi, useLogOutMutation } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { NavLink } from "react-router-dom";
 import { roles } from "@/constants/role";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 type userProps = {
   name: string;
@@ -33,9 +34,9 @@ type userProps = {
 
 export default function UserMenu({ name, email, photo }: userProps) {
   const [logOut] = useLogOutMutation()
-  const { data: userData } = useUserInfoQuery(undefined)
-  console.log(userData);
-  const dashboardLink = userData?.data?.role === roles.admin ? '/admin' : userData?.data?.role === roles.driver ? '/driver' : '/rider';
+  const { data: userInfo } = useUserInfoQuery(undefined)
+  // console.log(userData);
+  const dashboardLink = userInfo?.role === roles.admin ? '/admin' : userInfo?.role === roles.driver ? '/driver' : '/rider';
 
   const dispatch = useDispatch()
   const handleLogout = async () => {
@@ -83,21 +84,10 @@ export default function UserMenu({ name, email, photo }: userProps) {
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Profile</span>
+            <NavLink to={`/profile/${userInfo?._id}`} className="">Profile</NavLink>
           </DropdownMenuItem>
 
         </DropdownMenuGroup>
-        {/* <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup> */}
         <DropdownMenuSeparator />
 
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, DollarSign, Calendar, Clock, ArrowLeft, User, Car, Phone, Navigation, CheckCircle, XCircle, PlayCircle } from 'lucide-react';
+import { MapPin, DollarSign, Clock, ArrowLeft, User, Car, Phone, Navigation, CheckCircle, XCircle, PlayCircle } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { useGetRideByIdQuery } from '@/redux/features/rider/ride.api';
 

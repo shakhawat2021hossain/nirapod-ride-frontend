@@ -16,22 +16,23 @@ import {
 } from 'lucide-react'
 import logo from "../assets/nirapod-ride.png"
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
-import { authApi, useLogOutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { authApi, useLogOutMutation } from "@/redux/features/auth/auth.api"
 import { getSidebarItems } from "@/utils/getSidebarItems"
 import { toast } from "sonner"
 import { useDispatch } from "react-redux"
+import { useUserInfoQuery } from "@/redux/features/user/user.api"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { data } = useUserInfoQuery(undefined)
+  const { data: userData } = useUserInfoQuery(undefined)
   const [logOut] = useLogOutMutation()
   const dispatch = useDispatch()
 
 
   const mainLinks = [
-    ...getSidebarItems(data?.data?.role)
+    ...getSidebarItems(userData?.role)
   ]
   // console.log("Main Links:", mainLinks);
 

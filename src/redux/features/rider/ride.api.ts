@@ -55,7 +55,13 @@ export const rideApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["RIDE"]
         }),
+        earnings: build.query({
+            query: () => ({
+                url: `/ride/earnings`,
+                method: "GET",
+            }),
+        }),
     })
 })
 
-export const { useRidesQuery, useBookMutation, useGetRideByIdQuery, useAvailableRidesQuery, useUpdateStatusMutation, useAcceptRideMutation, useDriverRidesQuery } = rideApi
+export const { useRidesQuery, useBookMutation, useGetRideByIdQuery, useAvailableRidesQuery, useUpdateStatusMutation, useAcceptRideMutation, useDriverRidesQuery, useEarningsQuery } = rideApi

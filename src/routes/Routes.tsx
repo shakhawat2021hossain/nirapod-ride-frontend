@@ -16,7 +16,7 @@ import { riderSidebarRoutes } from "./riderSidebarRoutes";
 import NotFound from "@/pages/NotFound";
 import RoleBasedAccess from "./RoleBasedAccess";
 import { roles } from "@/constants/role";
-import RideDetails from "@/pages/Rider/RideDetails";
+import Profile from "@/pages/Common/Profile";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -40,15 +40,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/faq',
-                element: <RoleBasedAccess><FAQ /></RoleBasedAccess>
+                element: <FAQ />
             },
             {
                 path: '/book-ride',
                 element: <RoleBasedAccess><BookRide /></RoleBasedAccess>
             },
             {
-                path: '/ride-details',
-                element: <RideDetails/>
+                path: '/profile/:id',
+                element: <RoleBasedAccess><Profile /></RoleBasedAccess>
             },
         ]
     },
@@ -59,12 +59,18 @@ export const router = createBrowserRouter([
     },
     {
         path: '/driver',
-        element: <DashboardLayout />,
-        children: [...generateRoutes(driverSidebarRoutes)]
+        element: <RoleBasedAccess allowedRoles={[roles.driver]}><DashboardLayout /></RoleBasedAccess>,
+        children: [
+            {
+                index: true,
+                element: <Navigate to='/driver/overview' />
+            },
+            ...generateRoutes(driverSidebarRoutes)
+        ]
     },
     {
         path: '/rider',
-        element: <DashboardLayout />,
+        element: <RoleBasedAccess allowedRoles={[roles.rider]}><DashboardLayout /></RoleBasedAccess>,
         children: [
             {
                 index: true,

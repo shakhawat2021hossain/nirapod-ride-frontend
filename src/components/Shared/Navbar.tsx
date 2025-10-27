@@ -13,11 +13,10 @@ import {
 import { Link, NavLink } from "react-router-dom"
 import Logo from "../../assets/nirapod-ride.png"
 import { ModeToggle } from "../ui/mode-toggle"
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
 
-// import InfoMenu from "@/components/info-menu"
-// import NotificationMenu from "@/components/notification-menu"
 import UserMenu from "@/components/user-menu"
+import { roles } from "@/constants/role"
+import { useUserInfoQuery } from "@/redux/features/user/user.api"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -28,9 +27,8 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
-  const { data } = useUserInfoQuery(undefined)
-  const userEmail = data?.data?.email;
-  const userInfo = data?.data
+  const { data: userInfo } = useUserInfoQuery(undefined)
+  const userEmail = userInfo?.email;
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 transition-all duration-200">
@@ -136,18 +134,16 @@ export default function Navbar() {
           {/* If user is logged in */}
           {userEmail ? (
             <div className="flex items-center gap-3">
-              {/* Optional: Info and Notification menus */}
-              {/* <InfoMenu /> */}
-              {/* <NotificationMenu /> */}
-              {/* User avatar dropdown */}
-              <Button
-                asChild
-                variant="default"
-                size="sm"
-                className="text-sm font-medium"
-              >
-                <Link to="/book-ride">Book a Ride</Link>
-              </Button>
+              {
+                userInfo?.role === roles.rider && <Button
+                  asChild
+                  variant="default"
+                  size="sm"
+                  className="text-sm font-medium"
+                >
+                  <Link to="/book-ride">Book a Ride</Link>
+                </Button>
+              }
               <UserMenu name={userInfo.name} email={userInfo.email} />
             </div>
           ) : (
