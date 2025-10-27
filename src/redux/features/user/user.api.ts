@@ -36,7 +36,7 @@ export const userApi = baseApi.injectEndpoints({
         }),
         updateUser: build.mutation({
             query: ({id, payload}) =>({
-                url: `/user/update-user/${id}`,
+                url: `/user/${id}`,
                 method: "PATCH",
                 data: payload
             }),

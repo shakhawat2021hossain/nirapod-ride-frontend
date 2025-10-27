@@ -1,11 +1,9 @@
 import Footer from '@/components/Shared/Footer';
 import Navbar from '@/components/Shared/Navbar';
-import { adminSidebarRoutes } from '@/routes/adminSidebarRoutes';
-import { generateRoutes } from '@/utils/generateRoutes';
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
-    console.log(generateRoutes(adminSidebarRoutes));
+    // console.log(generateRoutes(adminSidebarRoutes));
     return (
         <div className='min-h-screen flex flex-col'>
             <Navbar/>

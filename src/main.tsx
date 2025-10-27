@@ -6,13 +6,16 @@ import { router } from './routes/Routes'
 import { ThemeProvider } from './providers/theme.provider'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from './redux/store'
-import { Toaster } from 'sonner'
+import { Toaster as ShadCNToast } from 'sonner'
+import { Toaster } from "react-hot-toast";
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ReduxProvider store={store}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
-        <Toaster richColors/>
+        <ShadCNToast richColors />
+        <Toaster />
 
       </ThemeProvider>
     </ReduxProvider>
