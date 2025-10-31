@@ -5,6 +5,7 @@ export const userSchema = z.object({
     phone: z
         .string()
         .min(10, { message: "Please enter a valid phone number." }),
+    
 });
 
 

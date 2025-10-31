@@ -1,83 +1,27 @@
 import Analytics from "@/pages/Admin/Analytics";
-import Overview from "@/pages/Admin/Overview";
+import UserManagement from "@/pages/Admin/UserManagement";
+import AllRides from "@/pages/Common/AllRides";
 import type { ISidebarItem } from "@/types";
-import { BarChart3, Car, LayoutDashboard, Shield, User } from "lucide-react";
+import { BarChart3, Car, Shield, User } from "lucide-react";
 
 export const adminSidebarRoutes: ISidebarItem[] = [
-    {
-      title: "Dashboard",
-      url: "/admin/overview",
-      icon: LayoutDashboard,
-      badge: null,
-      element: <Overview />
-    },
-    {
-      title: "Analytics",
-      url: "/admin/analytics",
-      icon: BarChart3,
-      badge: null,
-      element: <Analytics />
-    },
-    {
-      title: "All Rides",
-      url: "/admin/rides",
-      icon: Car,
-      badge: "12",
-    },
-    {
-      title: "Users",
-      url: "/admin/users",
-      icon: User,
-      badge: null
-    },
-    {
-      title: "Security",
-      url: "/admin/security",
-      icon: Shield,
-      badge: null
-    }
-  ]
-// export const adminSidebarRoutes: ISidebarItem[] = [
-//     {
-//         title: "Dashboard",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "Overview",
-//                 url: "/admin/overview",
-//                 element: <Overview />,
-//             },
-//             {
-//                 title: "Analytics",
-//                 url: "/admin/analytics",
-//                 element: <Analytics />,
-//             },
-//         ],
-//     },
-//     {
-//         title: "Ride Management",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "All Rides",
-//                 url: "/admin/overview",
-//             },
-//         ],
-//     },
-//     {
-//         title: "Settings",
-//         url: "#",
-//         items: [
-//             {
-//                 title: "Profile",
-//                 url: "/admin/profile",
-//             },
-//             {
-//                 title: "security",
-//                 url: "/admin/security",
-//             },
-//         ],
-//     },
-    
-// ]
-
+  {
+    title: "Analytics",
+    url: "/admin/analytics",
+    icon: BarChart3,
+    badge: null,
+    element: <Analytics />
+  },
+  {
+    title: "All Rides",
+    url: "/admin/rides",
+    icon: Car,
+    element: <AllRides />
+  },
+  {
+    title: "Users",
+    url: "/admin/users",
+    icon: User,
+    element: <UserManagement />
+  }
+]

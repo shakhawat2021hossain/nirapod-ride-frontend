@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useLoginMutation } from '@/redux/features/auth/auth.api';
+// import axios from 'axios';
 
 const Login = () => {
     const [login] = useLoginMutation()
@@ -21,9 +22,13 @@ const Login = () => {
         }
     });
 
-    const onSubmit = async(data: LoginFormData) => {
+    const onSubmit = async (data: LoginFormData) => {
         console.log("Login data:", data);
-        const result =  await login(data)
+        // const result = await axios.post("https://nirapod-ride.vercel.app/api/v1/auth/login", data, {
+        //     withCredentials: true
+        // })
+
+        const result = await login(data)
         console.log(result);
         toast.success("Login successful")
         navigate("/")

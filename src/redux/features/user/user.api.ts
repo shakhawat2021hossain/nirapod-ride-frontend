@@ -4,7 +4,7 @@ import { baseApi } from "@/redux/baseApi";
 export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         updateStatus: build.mutation({
-            query: ({status, id}) => ({
+            query: ({ status, id }) => ({
                 url: `/ride/${id}/update-status`,
                 method: "PATCH",
                 data: status,
@@ -15,16 +15,17 @@ export const userApi = baseApi.injectEndpoints({
             query: () => ({
                 url: "/user/availability",
                 method: "PATCH",
-            }), 
+            }),
             invalidatesTags: ["USER"]
-        
+
         }),
-        getUsers: build.query({
+        allUsers: build.query({
             query: () => ({
-                url: '/user/all-use',
+                url: '/user/all-user',
                 method: "GET",
             }),
-            providesTags: ["USER"]
+            providesTags: ["USER"],
+            transformResponse: (response) => response?.data,
         }),
         userInfo: build.query({
             query: () => ({
@@ -35,14 +36,26 @@ export const userApi = baseApi.injectEndpoints({
             transformResponse: (response) => response?.data
         }),
         updateUser: build.mutation({
-            query: ({id, payload}) =>({
+            query: ({ id, payload }) => ({
                 url: `/user/${id}`,
                 method: "PATCH",
                 data: payload
             }),
             invalidatesTags: ["USER"]
+        }),
+        approveDriver: build.mutation({
+            query: ({id, status}) => ({
+                url: `/user/driver-request/${id}/approve?status=${status}`,
+                method: "PATCH"
+            }),
+        }),
+        blockUser: build.mutation({
+            query: (id) => ({
+                url: `/user/${id}/toggle-block`,
+                method: "PATCH",
+            }),
         })
     })
 })
 
-export const { useToggleAvailabilityMutation, useGetUsersQuery, useUpdateUserMutation, useUserInfoQuery } = userApi
+export const { useToggleAvailabilityMutation, useAllUsersQuery, useUpdateUserMutation, useUserInfoQuery, useApproveDriverMutation, useBlockUserMutation } = userApi
