@@ -102,7 +102,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   >
                     <NavLink to={item.url} className="flex items-center gap-3 py-3 px-3 rounded-lg">
                       {IconComponent &&
-                        <IconComponent className={`h-5 w-5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
+                        <IconComponent className={`h-5 w-5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
                       }
                       <span className="font-medium">{item.title}</span>
                       {item.badge && (

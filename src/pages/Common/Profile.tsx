@@ -8,7 +8,6 @@ import {
     User,
     Phone,
     Shield,
-    Car,
     Edit,
     Key,
     Mail,
@@ -16,7 +15,7 @@ import {
     X,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useUpdateUserMutation, useUserInfoQuery } from '@/redux/features/user/user.api';
+import { useChangePassMutation, useUpdateUserMutation, useUserInfoQuery } from '@/redux/features/user/user.api';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,13 +23,16 @@ import { userSchema, type userFormData } from '@/types/user.type';
 import { useParams } from 'react-router-dom';
 import { roles } from '@/constants/role';
 import toast from 'react-hot-toast';
+import { changePassSchema, type changePassFormData } from '@/types/auth.type';
 
 
 
 const Profile = () => {
     const { data: userInfo } = useUserInfoQuery(undefined)
-    console.log(userInfo)
+    // console.log(userInfo)
+
     const [updateUser] = useUpdateUserMutation()
+    const [changePass] = useChangePassMutation()
     const { id } = useParams()
 
     const form = useForm<userFormData>({
@@ -38,6 +40,13 @@ const Profile = () => {
         defaultValues: {
             name: userInfo.name || "",
             phone: userInfo.phone || ""
+        }
+    })
+    const passForm = useForm<changePassFormData>({
+        resolver: zodResolver(changePassSchema),
+        defaultValues: {
+            oldPass: "",
+            newPass: ""
         }
     })
 
@@ -51,43 +60,19 @@ const Profile = () => {
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-    const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
 
 
 
-    const [passwordForm, setPasswordForm] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-    });
-
-    const [vehicleForm, setVehicleForm] = useState({
-        model: userInfo.vehicleInfo.model,
-        plateNum: userInfo.vehicleInfo.plateNum,
-        type: userInfo.vehicleInfo.type,
-        year: userInfo.vehicleInfo?.year || "2025", 
-    });
-
-
-    const handlePasswordSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // TODO: Add API call to change password
-        if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-            alert("New passwords don't match!");
-            return;
-        }
-        console.log('Changing password...', passwordForm);
-        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    const handlePasswordSubmit = async(payload: changePassFormData) => {
+        // console.log(payload)
+        const result = await changePass(payload)
+        // console.log(result)
+        toast.success(result.data.message || "Password changed Successfully")
+        passForm.reset()
         setIsPasswordModalOpen(false);
     };
 
-    const handleVehicleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // TODO: Add API call to update vehicle details
-
-        setIsVehicleModalOpen(false);
-    };
-
+    
     return (
         <div className="space-y-6 max-w-7xl mx-auto my-6">
             {/* Header */}
@@ -169,69 +154,8 @@ const Profile = () => {
                         </CardContent>
                     </Card>
 
-                    {/* Vehicle Information - Only for drivers */}
-                    {userInfo?.role === roles.driver && (
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Car className="h-5 w-5 text-green-500" />
-                                        Vehicle Information
-                                    </CardTitle>
-                                    <CardDescription>
-                                        Your registered vehicle details
-                                    </CardDescription>
-                                </div>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => {
-                                        setVehicleForm(userInfo.vehicle);
-                                        setIsVehicleModalOpen(true);
-                                    }}
-                                    className="gap-2"
-                                >
-                                    <Edit className="h-4 w-4" />
-                                    Edit
-                                </Button>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <Label className="text-sm text-muted-foreground">Vehicle Model</Label>
-                                            <div className="p-3 bg-muted/50 rounded-lg">
-                                                <span className="font-medium">{userInfo.vehicleInfo.model}</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label className="text-sm text-muted-foreground">License Plate</Label>
-                                            <div className="p-3 bg-muted/50 rounded-lg">
-                                                <span className="font-medium">{userInfo.vehicleInfo.plateNum}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <Label className="text-sm text-muted-foreground">Color</Label>
-                                            <div className="p-3 bg-muted/50 rounded-lg">
-                                                <span className="font-medium capitalize">{userInfo.vehicleInfo.type}</span>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label className="text-sm text-muted-foreground">Year</Label>
-                                            <div className="p-3 bg-muted/50 rounded-lg">
-                                                <span className="font-medium">{userInfo?.vehicleInfo?.year || "2025"}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    )}
+                    {/*TODO: Vehicle Information - Only for drivers */}
+                    
                 </div>
 
                 {/* Actions Sidebar */}
@@ -354,7 +278,7 @@ const Profile = () => {
             </Dialog>
 
             {/* Change Password Modal */}
-            {/* <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
+            <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
@@ -365,149 +289,44 @@ const Profile = () => {
                             Enter your current password and set a new one
                         </DialogDescription>
                     </DialogHeader>
-
-                    <form onSubmit={handlePasswordSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="currentPassword">Current Password</Label>
-                            <div className="relative">
-                                <Input
-                                    id="currentPassword"
-                                    type={showCurrentPassword ? "text" : "password"}
-                                    value={passwordForm.currentPassword}
-                                    onChange={(e) => setPasswordForm(prev => ({ ...prev, currentPassword: e.target.value }))}
-                                    placeholder="Enter current password"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                                >
-                                    {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="newPassword">New Password</Label>
-                            <div className="relative">
-                                <Input
-                                    id="newPassword"
-                                    type={showNewPassword ? "text" : "password"}
-                                    value={passwordForm.newPassword}
-                                    onChange={(e) => setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }))}
-                                    placeholder="Enter new password"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowNewPassword(!showNewPassword)}
-                                >
-                                    {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                            <div className="relative">
-                                <Input
-                                    id="confirmPassword"
-                                    type={showConfirmPassword ? "text" : "password"}
-                                    value={passwordForm.confirmPassword}
-                                    onChange={(e) => setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                                    placeholder="Confirm new password"
-                                />
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                >
-                                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </Button>
-                            </div>
-                        </div>
-
-                        <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setIsPasswordModalOpen(false)}>
-                                <X className="h-4 w-4 mr-2" />
-                                Cancel
-                            </Button>
-                            <Button type="submit">
-                                <Save className="h-4 w-4 mr-2" />
-                                Update Password
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog> */}
-
-            {/* Edit Vehicle Modal - Only for drivers */}
-            {userInfo.role === roles.driver && (
-                <Dialog open={isVehicleModalOpen} onOpenChange={setIsVehicleModalOpen}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2">
-                                <Car className="h-5 w-5" />
-                                Edit Vehicle Details
-                            </DialogTitle>
-                            <DialogDescription>
-                                Update your vehicle information
-                            </DialogDescription>
-                        </DialogHeader>
-
-                        <form onSubmit={handleVehicleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="model">Vehicle Model</Label>
-                                    <Input
-                                        id="model"
-                                        value={vehicleForm.model}
-                                        onChange={(e) => setVehicleForm(prev => ({ ...prev, model: e.target.value }))}
-                                        placeholder="e.g., Toyota Corolla"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="licensePlate">License Plate</Label>
-                                    <Input
-                                        id="licensePlate"
-                                        value={vehicleForm.plateNum}
-                                        onChange={(e) => setVehicleForm(prev => ({ ...prev, licensePlate: e.target.value }))}
-                                        placeholder="e.g., DHA-12345"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="color">Type</Label>
-                                    <Input
-                                        id="color"
-                                        value={vehicleForm.type}
-                                        onChange={(e) => setVehicleForm(prev => ({ ...prev, color: e.target.value }))}
-                                        placeholder="e.g., White"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="year">Year</Label>
-                                    <Input
-                                        id="year"
-                                        value={vehicleForm.year}
-                                        onChange={(e) => setVehicleForm(prev => ({ ...prev, year: e.target.value }))}
-                                        placeholder="e.g., 2022"
-                                    />
-                                </div>
-                            </div>
-
+                    <Form {...passForm}>
+                        <form onSubmit={passForm.handleSubmit(handlePasswordSubmit)} className='space-y-4'>
+                            <FormField
+                                control={passForm.control}
+                                name="oldPass"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Old Password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="password"
+                                                placeholder="Enter Old Password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={passForm.control}
+                                name="newPass"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>New Password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="password"
+                                                placeholder="Enter New Password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <DialogFooter>
-                                <Button type="button" variant="outline" onClick={() => setIsVehicleModalOpen(false)}>
+                                <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>
                                     <X className="h-4 w-4 mr-2" />
                                     Cancel
                                 </Button>
@@ -517,9 +336,13 @@ const Profile = () => {
                                 </Button>
                             </DialogFooter>
                         </form>
-                    </DialogContent>
-                </Dialog>
-            )}
+                    </Form>
+
+                </DialogContent>
+            </Dialog>
+
+            {/*TODO: Edit Vehicle Modal - Only for drivers */}
+            
         </div>
     );
 };

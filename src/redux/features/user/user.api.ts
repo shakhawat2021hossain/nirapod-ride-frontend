@@ -44,7 +44,7 @@ export const userApi = baseApi.injectEndpoints({
             invalidatesTags: ["USER"]
         }),
         approveDriver: build.mutation({
-            query: ({id, status}) => ({
+            query: ({ id, status }) => ({
                 url: `/user/driver-request/${id}/approve?status=${status}`,
                 method: "PATCH"
             }),
@@ -54,8 +54,23 @@ export const userApi = baseApi.injectEndpoints({
                 url: `/user/${id}/toggle-block`,
                 method: "PATCH",
             }),
-        })
+        }),
+        changePass: build.mutation({
+            query: (pass) => ({
+                url: '/user/change-password',
+                method: "PATCH",
+                data: pass
+            }),
+        }),
     })
 })
 
-export const { useToggleAvailabilityMutation, useAllUsersQuery, useUpdateUserMutation, useUserInfoQuery, useApproveDriverMutation, useBlockUserMutation } = userApi
+export const {
+    useToggleAvailabilityMutation,
+    useAllUsersQuery,
+    useUpdateUserMutation,
+    useUserInfoQuery,
+    useApproveDriverMutation,
+    useBlockUserMutation,
+    useChangePassMutation
+} = userApi

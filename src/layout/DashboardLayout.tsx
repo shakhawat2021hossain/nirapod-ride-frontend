@@ -4,8 +4,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Outlet } from "react-router-dom"
-import { Bell, Search, Settings } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Search } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { ModeToggle } from "@/components/ui/mode-toggle"
 import UserMenu from "@/components/user-menu"
@@ -40,17 +39,17 @@ export default function DashboardLayout() {
             <ModeToggle />
 
             {/* Notifications */}
-            <Button variant="ghost" size="icon" className="relative">
+            {/* <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                 3
               </span>
-            </Button>
+            </Button> */}
 
             {/* Settings */}
-            <Button variant="ghost" size="icon">
+            {/* <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
-            </Button>
+            </Button> */}
 
             {/* User Menu - same component as public navbar */}
             {userInfo && (

@@ -2,7 +2,7 @@ import Analytics from "@/pages/Admin/Analytics";
 import UserManagement from "@/pages/Admin/UserManagement";
 import AllRides from "@/pages/Common/AllRides";
 import type { ISidebarItem } from "@/types";
-import { BarChart3, Car, Shield, User } from "lucide-react";
+import { BarChart3, Car, User } from "lucide-react";
 
 export const adminSidebarRoutes: ISidebarItem[] = [
   {

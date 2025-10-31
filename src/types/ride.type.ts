@@ -7,7 +7,7 @@ export interface IRide {
   endLocation: string;
   fare: number;
   isCancelled: boolean;
-  status: 'requested' | 'accepted' | 'in-progress' | 'completed' | 'cancelled';
+  status: 'requested' | 'accepted' | 'in_transit' | 'completed' | 'cancelled';
   requestedAt: string;
   createdAt: string;
   updatedAt: string;

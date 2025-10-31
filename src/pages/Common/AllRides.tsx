@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,7 @@ import {
     Eye
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAllRidesQuery } from '@/redux/features/rider/ride.api';
 
 interface Ride {
@@ -31,7 +31,6 @@ const AllRides = () => {
     const navigate = useNavigate();
 
     const allRides = allRidesData?.data || [];
-    console.log(allRides)
 
     const [filteredRides, setFilteredRides] = useState<Ride[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -42,63 +41,66 @@ const AllRides = () => {
     const [sortField, setSortField] = useState<keyof Ride>('requestedAt');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-    // Apply filters and search
-    // useEffect(() => {
-    //     if (!allRides || allRides.length === 0) {
-    //         setFilteredRides([]);
-    //         return;
-    //     }
+    // ✅ Apply Filters, Search, and Sorting
+    useEffect(() => {
+        if (!allRides || allRides.length === 0) {
+            setFilteredRides([]);
+            return;
+        }
 
-    //     let result = [...allRides];
+        let result = [...allRides];
 
-    //     // Search filter
-    //     if (searchQuery) {
-    //         result = result.filter(ride =>
-    //             ride.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //             ride.endLocation.toLowerCase().includes(searchQuery.toLowerCase())
-    //         );
-    //     }
+        // 🔍 Search filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            result = result.filter(ride =>
+                ride.startLocation.toLowerCase().includes(query) ||
+                ride.endLocation.toLowerCase().includes(query)
+            );
+        }
 
-    //     // Status filter
-    //     if (statusFilter !== 'all') {
-    //         result = result.filter(ride => ride.status === statusFilter);
-    //     }
+        // 🚦 Status filter
+        if (statusFilter !== 'all') {
+            result = result.filter(ride => ride.status === statusFilter);
+        }
 
-    //     // Fare range filter
-    //     if (fareRange.min) {
-    //         result = result.filter(ride => ride.fare >= parseInt(fareRange.min));
-    //     }
-    //     if (fareRange.max) {
-    //         result = result.filter(ride => ride.fare <= parseInt(fareRange.max));
-    //     }
+        // 💰 Fare range filter
+        if (fareRange.min) {
+            result = result.filter(ride => ride.fare >= parseInt(fareRange.min));
+        }
+        if (fareRange.max) {
+            result = result.filter(ride => ride.fare <= parseInt(fareRange.max));
+        }
 
-    //     // Sort data
-    //     result.sort((a, b) => {
-    //         const aValue = a[sortField];
-    //         const bValue = b[sortField];
+        // 🔢 Sorting
+        result.sort((a, b) => {
+            const aValue = a[sortField];
+            const bValue = b[sortField];
 
-    //         if (sortField === 'requestedAt') {
-    //             const aDate = new Date(aValue as string);
-    //             const bDate = new Date(bValue as string);
-    //             return sortDirection === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
-    //         }
+            if (sortField === 'requestedAt') {
+                const aDate = new Date(aValue as string).getTime();
+                const bDate = new Date(bValue as string).getTime();
+                return sortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+            }
 
-    //         if (typeof aValue === 'number' && typeof bValue === 'number') {
-    //             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-    //         }
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+            }
 
-    //         if (typeof aValue === 'string' && typeof bValue === 'string') {
-    //             return sortDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    //         }
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return sortDirection === 'asc'
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            }
 
-    //         return 0;
-    //     });
+            return 0;
+        });
 
-    //     setFilteredRides(result);
-    //     setCurrentPage(1);
-    // }, [searchQuery, statusFilter, fareRange, allRides, sortField, sortDirection]);
+        setFilteredRides(result);
+        setCurrentPage(1);
+    }, [searchQuery, statusFilter, fareRange, allRides, sortField, sortDirection]);
 
-    // Pagination
+    // 🔢 Pagination
     const totalPages = Math.ceil(filteredRides.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentRides = filteredRides.slice(startIndex, startIndex + itemsPerPage);
@@ -111,7 +113,11 @@ const AllRides = () => {
 
     const getStatusBadge = (status: string, isCancelled?: boolean) => {
         if (isCancelled) {
-            return <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">Cancelled</Badge>;
+            return (
+                <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200">
+                    Cancelled
+                </Badge>
+            );
         }
 
         const statusConfig = {
@@ -145,7 +151,11 @@ const AllRides = () => {
 
     const SortIcon = ({ field }: { field: keyof Ride }) => {
         if (sortField !== field) return <ChevronUp className="h-4 w-4 opacity-30" />;
-        return sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />;
+        return sortDirection === 'asc' ? (
+            <ChevronUp className="h-4 w-4" />
+        ) : (
+            <ChevronDown className="h-4 w-4" />
+        );
     };
 
     if (isLoading) {
@@ -263,12 +273,8 @@ const AllRides = () => {
                                                 <SortIcon field="requestedAt" />
                                             </div>
                                         </th>
-                                        <th className="text-left p-4 font-medium">
-                                            From
-                                        </th>
-                                        <th className="text-left p-4 font-medium">
-                                            To
-                                        </th>
+                                        <th className="text-left p-4 font-medium">From</th>
+                                        <th className="text-left p-4 font-medium">To</th>
                                         <th
                                             className="text-left p-4 font-medium cursor-pointer hover:bg-muted/80 transition-colors"
                                             onClick={() => handleSort('fare')}
@@ -278,17 +284,13 @@ const AllRides = () => {
                                                 <SortIcon field="fare" />
                                             </div>
                                         </th>
-                                        <th className="text-left p-4 font-medium">
-                                            Status
-                                        </th>
-                                        <th className="text-left p-4 font-medium">
-                                            Actions
-                                        </th>
+                                        <th className="text-left p-4 font-medium">Status</th>
+                                        <th className="text-left p-4 font-medium">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y">
-                                    {allRides.length > 0 ? (
-                                        allRides.map((ride: Ride) => (
+                                    {currentRides.length > 0 ? (
+                                        currentRides.map((ride: Ride) => (
                                             <tr key={ride._id} className="hover:bg-muted/30 transition-colors">
                                                 <td className="p-4">
                                                     <div className="font-medium">
@@ -298,44 +300,27 @@ const AllRides = () => {
                                                         {format(new Date(ride.requestedAt), 'hh:mm a')}
                                                     </div>
                                                 </td>
+                                                <td className="p-4 max-w-[200px] truncate">{ride.startLocation}</td>
+                                                <td className="p-4 max-w-[200px] truncate">{ride.endLocation}</td>
+                                                <td className="p-4 font-semibold text-primary">৳{ride.fare}</td>
+                                                <td className="p-4">{getStatusBadge(ride.status, ride.isCancelled)}</td>
                                                 <td className="p-4">
-                                                    <div className="max-w-[200px] truncate" title={ride.startLocation}>
-                                                        {ride.startLocation}
-                                                    </div>
-                                                </td>
-                                                <td className="p-4">
-                                                    <div className="max-w-[200px] truncate" title={ride.endLocation}>
-                                                        {ride.endLocation}
-                                                    </div>
-                                                </td>
-                                                <td className="p-4">
-                                                    <div className="font-semibold text-primary">
-                                                        ৳{ride.fare}
-                                                    </div>
-                                                </td>
-                                                <td className="p-4">
-                                                    {getStatusBadge(ride.status, ride.isCancelled)}
-                                                </td>
-                                                <td className="p-4">
-                                                    <Link to={`/rider/rides/${ride._id}`}>
-                                                        <Button
-                                                            onClick={() => handleViewDetails(ride._id)}
-                                                            variant="outline"
-                                                            size="sm"
-                                                            className="gap-2"
-                                                        >
-                                                            <Eye className="h-4 w-4" />
-                                                            Details
-
-                                                        </Button>
-                                                    </Link>
+                                                    <Button
+                                                        onClick={() => handleViewDetails(ride._id)}
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="gap-2"
+                                                    >
+                                                        <Eye className="h-4 w-4" />
+                                                        Details
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))
                                     ) : (
                                         <tr>
                                             <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                                                {allRides.length === 0 ? 'No rides found.' : 'No rides found matching your filters.'}
+                                                No rides found.
                                             </td>
                                         </tr>
                                     )}
