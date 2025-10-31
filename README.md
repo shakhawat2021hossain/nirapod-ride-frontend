@@ -60,7 +60,7 @@ This project focuses on building a **production-grade frontend** using **React, 
 
 ---
 
-### 🆘 SOS / Emergency System (Bonus Feature)
+### 🆘 SOS / Emergency System 
 Enhances user safety by allowing riders and drivers to **quickly call for help** during active rides.
 
 - Floating **SOS button** visible only during rides  
