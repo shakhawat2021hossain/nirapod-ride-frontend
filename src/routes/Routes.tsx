@@ -55,7 +55,13 @@ export const router = createBrowserRouter([
     {
         path: '/admin',
         element: <RoleBasedAccess allowedRoles={[roles.admin]}><DashboardLayout /></RoleBasedAccess>,
-        children: [...generateRoutes(adminSidebarRoutes)]
+        children: [
+            {
+                index: true,
+                element: <Navigate to='/admin/analytics' />
+            },
+            ...generateRoutes(adminSidebarRoutes)
+        ]
     },
     {
         path: '/driver',

@@ -22,7 +22,6 @@ export const driverSidebarRoutes: ISidebarItem[] = [
       title: "Available Rides",
       url: "/driver/available-rides",
       icon: Car,
-      badge: "12",
       element: <AvailableRides />
     },
     {

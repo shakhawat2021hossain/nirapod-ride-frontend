@@ -167,9 +167,10 @@ export default function Analytics() {
                                     fill="#8884d8"
                                     dataKey="value"
                                 >
-                                    {driverActivityData.map((entry, index) => (
+                                    {driverActivityData.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index]} />
                                     ))}
+
                                 </Pie>
                                 <Tooltip />
                                 <Legend />

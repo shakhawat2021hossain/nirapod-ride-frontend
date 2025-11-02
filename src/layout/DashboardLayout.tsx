@@ -13,6 +13,8 @@ import { useUserInfoQuery } from "@/redux/features/user/user.api"
 
 export default function DashboardLayout() {
   const { data: userInfo } = useUserInfoQuery(undefined)
+  
+
 
   return (
     <SidebarProvider>
@@ -61,6 +63,7 @@ export default function DashboardLayout() {
         {/* Main Content */}
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
+
             <Outlet />
           </div>
         </main>

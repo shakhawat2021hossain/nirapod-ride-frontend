@@ -16,10 +16,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { rideSchema, type RideFormValues } from "@/types/ride.type";
 import { MapPin, Navigation, Clock, DollarSign, Car, CreditCard, Smartphone } from 'lucide-react';
 import { useBookMutation } from "@/redux/features/rider/ride.api";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function BookRide() {
-
+  const navigate = useNavigate()
   const [book] = useBookMutation()
 
   const [fare, setFare] = useState<number | null>(null);
@@ -74,9 +75,10 @@ export default function BookRide() {
       // console.log("Sending ride body:", rideBody);
 
       const result = await book(rideBody).unwrap();
-      console.log("Ride booked successfully:", result);
+      // console.log("Ride booked successfully:", result);
+      navigate('/')
 
-      toast.success("Ride Booked Successfully");
+      toast.success(result?.data?.message || "Ride Booked Successfully");
       toast.success("Wait for the rider...");
       form.reset();
       setFare(null);
@@ -252,8 +254,8 @@ export default function BookRide() {
                                     <FormLabel
                                       htmlFor={method.value}
                                       className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all h-full ${isSelected
-                                          ? 'border-primary bg-primary/5 shadow-md'
-                                          : 'border-muted hover:border-muted-foreground/30 hover:bg-muted/50'
+                                        ? 'border-primary bg-primary/5 shadow-md'
+                                        : 'border-muted hover:border-muted-foreground/30 hover:bg-muted/50'
                                         }`}
                                     >
                                       <div className={`p-3 rounded-lg mb-2 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'

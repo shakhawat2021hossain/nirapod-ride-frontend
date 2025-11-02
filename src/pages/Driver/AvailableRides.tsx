@@ -1,24 +1,27 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Clock, XCircle } from 'lucide-react';
+import { MapPin, Clock, XCircle, RefreshCw } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useAcceptRideMutation, useAvailableRidesQuery } from '@/redux/features/rider/ride.api';
 import type { IRide } from '@/types/ride.type';
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 
 const AvailableRides = () => {
     const { data: availableRidesData, isLoading, error, refetch } = useAvailableRidesQuery(undefined);
     const [acceptRide] = useAcceptRideMutation();
-
+    const navigate = useNavigate()
     const availableRides = availableRidesData?.data || [];
 
     const handleAcceptRide = async (rideId: string) => {
         try {
             await acceptRide(rideId).unwrap();
 
-            alert('Ride accepted successfully!');
+            toast.success("Ride accepted!");
+            navigate('/driver/ongoing')
             refetch();
         } catch (error) {
             console.error('Error accepting ride:', error);
@@ -43,13 +46,10 @@ const AvailableRides = () => {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-64">
-                <div className="text-center">
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">Loading available rides...</p>
-                </div>
+                <RefreshCw className="w-10 h-10 text-primary animate-spin mx-auto mb-4" />
             </div>
         );
-    }
+    };
 
     if (error) {
         return (

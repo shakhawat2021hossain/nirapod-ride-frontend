@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useForm } from 'react-hook-form';
 import { registerSchema, type RegisterFormData } from '@/types/auth.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useRegisterMutation } from '@/redux/features/auth/auth.api';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 const Register = () => {
     const [activeTab, setActiveTab] = useState<"RIDER" | "DRIVER">("RIDER");
     const [register] = useRegisterMutation()
+    const navigate = useNavigate()
 
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
@@ -34,7 +35,9 @@ const Register = () => {
         
         const result =  await register(data)
         console.log(result);
+        navigate('/login')
         toast.success("Registration successful")
+        toast.success("Login Please to continue")
 
     };
 

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export type TRideStatus = 'requested' | 'accepted' | 'in_transit' | 'completed' | 'cancelled'
+
 export interface IRide {
   _id: string;
   rider: string;
@@ -7,7 +9,7 @@ export interface IRide {
   endLocation: string;
   fare: number;
   isCancelled: boolean;
-  status: 'requested' | 'accepted' | 'in_transit' | 'completed' | 'cancelled';
+  status: TRideStatus;
   requestedAt: string;
   createdAt: string;
   updatedAt: string;

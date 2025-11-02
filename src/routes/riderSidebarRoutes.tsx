@@ -1,5 +1,6 @@
-import Overview from "@/pages/Admin/Overview";
+
 import MyRides from "@/pages/Rider/MyRides";
+import RiderOverview from "@/pages/Rider/RiderOverview";
 import type { ISidebarItem } from "@/types";
 import {Car, LayoutDashboard } from "lucide-react";
 import { lazy } from "react";
@@ -15,13 +16,12 @@ export const riderSidebarRoutes: ISidebarItem[] = [
       url: "/rider/overview",
       icon: LayoutDashboard,
       badge: null,
-      element: <Overview />
+      element: <RiderOverview />
     },
     {
       title: "My Rides",
       url: "/rider/my-rides",
       icon: Car,
-      badge: "12",
       element: <MyRides />
     },
     {
