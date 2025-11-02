@@ -8,11 +8,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useLoginMutation } from '@/redux/features/auth/auth.api';
-// import axios from 'axios';
+import { useState } from 'react';
+import type { IError } from '@/types';
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+
 
 const Login = () => {
     const [login] = useLoginMutation()
     const navigate = useNavigate()
+    const [showPassword, setShowPassword] = useState(false)
 
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -24,15 +28,25 @@ const Login = () => {
 
     const onSubmit = async (data: LoginFormData) => {
         console.log("Login data:", data);
-        // const result = await axios.post("https://nirapod-ride.vercel.app/api/v1/auth/login", data, {
-        //     withCredentials: true
-        // })
 
-        const result = await login(data)
-        console.log(result);
-        toast.success("Login successful")
-        navigate("/")
+        try {
+            const result = await login(data).unwrap();
+            console.log("try block", result);
+
+            if (result?.success) {
+                toast.success("Login successful");
+                navigate("/");
+            }
+        } catch (err) {
+            const error = err as IError;
+            console.log("Error data:", error.data);
+            toast.error(error.data?.message || "Login failed");
+        }
     };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-blue-950 flex items-center justify-center p-4">
@@ -73,11 +87,23 @@ const Login = () => {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="password"
-                                                placeholder="Enter your password"
-                                                {...field}
-                                            />
+                                            <div className="relative">
+                                                <Input
+                                                    type={showPassword ? "text" : "password"}
+                                                    placeholder="Enter your password"
+                                                    {...field}
+                                                    className="pr-16"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="absolute right-0 top-0 h-full px-3 py-2 text-xs hover:bg-transparent"
+                                                    onClick={togglePasswordVisibility}
+                                                >
+                                                    {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                                                </Button>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

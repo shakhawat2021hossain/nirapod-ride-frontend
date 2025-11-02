@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 export const loginSchema = z.object({
     email: z.string().email({ message: "Please enter a valid email address." }),
     password: z.string().min(6, { message: "Password must be at least 6 characters." }),
@@ -24,6 +25,8 @@ export const registerSchema = z.object({
     phone: z
         .string()
         .min(10, { message: "Please enter a valid phone number." }),
+
+
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
@@ -37,6 +40,16 @@ export const changePassSchema = z.object({
         .string()
         .min(6, { message: "Password must be at least 6 characters." }),
 });
+
+export const becomeDriverSchema = z.object({
+    model: z.string(),
+    type: z.enum(["car", "bike", "auto", "cng"]),
+    plateNum: z.string()
+})
+
+
+export type becomeDriverFormData = z.infer<typeof becomeDriverSchema>;
+
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;

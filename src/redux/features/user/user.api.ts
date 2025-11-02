@@ -35,6 +35,13 @@ export const userApi = baseApi.injectEndpoints({
             providesTags: ["USER"],
             transformResponse: (response) => response?.data
         }),
+        becomeDriver: build.mutation({
+            query: (payload) => ({
+                url: "/user/become-driver",
+                method: "PATCH",
+                data: payload
+            })
+        }),
         updateUser: build.mutation({
             query: ({ id, payload }) => ({
                 url: `/user/${id}`,
@@ -72,5 +79,6 @@ export const {
     useUserInfoQuery,
     useApproveDriverMutation,
     useBlockUserMutation,
-    useChangePassMutation
+    useChangePassMutation,
+    useBecomeDriverMutation
 } = userApi

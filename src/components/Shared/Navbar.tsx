@@ -17,6 +17,7 @@ import { ModeToggle } from "../ui/mode-toggle"
 import UserMenu from "@/components/user-menu"
 import { roles } from "@/constants/role"
 import { useUserInfoQuery } from "@/redux/features/user/user.api"
+import BecomeDriver from "./BecomeDriver"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -28,6 +29,7 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data: userInfo } = useUserInfoQuery(undefined)
+  console.log(userInfo)
   const userEmail = userInfo?.email;
 
   return (
@@ -135,16 +137,20 @@ export default function Navbar() {
           {userEmail ? (
             <div className="flex items-center gap-3">
               {
-                userInfo?.role === roles.rider && <Button
-                  asChild
-                  variant="default"
-                  size="sm"
-                  className="text-sm font-medium"
-                >
-                  <Link to="/book-ride">Book a Ride</Link>
-                </Button>
+                userInfo?.role === roles.rider &&
+                <div className="flex space-x-4 items-center">
+                  <Button
+                    asChild
+                    variant="default"
+                    size="sm"
+                  >
+                    <Link to="/book-ride">Book a Ride</Link>
+                  </Button>
+                  <BecomeDriver />
+                </div>
               }
               <UserMenu name={userInfo.name} email={userInfo.email} />
+
             </div>
           ) : (
             // If not logged in

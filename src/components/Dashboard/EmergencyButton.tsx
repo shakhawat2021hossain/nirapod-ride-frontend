@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import { AlertTriangle, Phone, Navigation, UserCheck } from "lucide-react";
+import { AlertTriangle, Navigation, UserCheck } from "lucide-react";
 
 const SOSButton = () => {
     const [open, setOpen] = useState(false);

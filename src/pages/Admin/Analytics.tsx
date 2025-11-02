@@ -63,7 +63,6 @@ export default function Analytics() {
         return (
             <div className="flex justify-center items-center h-64">
                 <RefreshCw className="w-10 h-10 text-primary animate-spin mx-auto mb-4" />
-                <p className="text-muted-foreground">Loading users...</p>
             </div>
         );
     }

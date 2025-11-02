@@ -14,7 +14,7 @@ export type TRole = "ADMIN" | "DRIVER" | "RIDER";
 export type TAvailability = "ONLINE" | "OFFLINE";
 
 
-export type TVehicleType = "car"|"bike"|"cng"|"auto";
+export type TVehicleType = "car" | "bike" | "cng" | "auto";
 
 export interface IVehicle {
     type: TVehicleType;
@@ -23,12 +23,8 @@ export interface IVehicle {
     // passengerCapacity: number; 
 }
 
-// export enum DriverRequestStatus {
-//     PENDING = "pending",
-//     APPROVED = "approved",
-//     REJECTED = "rejected",
 
-// }
+
 export type TDriverRequestStatus = "rejected" | "approved" | "pending"
 
 
@@ -61,3 +57,15 @@ export interface IUser {
     driverRequest?: IDriverRequest;
     vehicleInfo?: IVehicle
 }
+
+
+
+export interface IError {
+    data?: {
+        success: boolean;
+        message: string;
+        stack?: string | null;
+    };
+    status?: number;
+}
+
