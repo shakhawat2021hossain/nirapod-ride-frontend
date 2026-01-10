@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { X } from "lucide-react";
+import type { IError } from "@/types";
 
 const BecomeDriver = () => {
     const [becomeDriver] = useBecomeDriverMutation();
@@ -41,8 +42,9 @@ const BecomeDriver = () => {
             toast.success('Wait For the admin Approval');
             setIsModalOpen(false);
             form.reset();
-        } catch (error) {
-            toast.error('Something went wrong');
+        } catch (err) {
+            const error = err as IError;
+            toast.error(error.data?.message || 'Something went wrong');
             console.error(error);
         }
     };

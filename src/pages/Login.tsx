@@ -11,10 +11,11 @@ import { useLoginMutation } from '@/redux/features/auth/auth.api';
 import { useState } from 'react';
 import type { IError } from '@/types';
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { Loader2 } from 'lucide-react';
 
 
 const Login = () => {
-    const [login] = useLoginMutation()
+    const [login, {isLoading}] = useLoginMutation()
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
 
@@ -31,15 +32,20 @@ const Login = () => {
 
         try {
             const result = await login(data).unwrap();
-            console.log("try block", result);
+            console.log("try block login", result);
 
             if (result?.success) {
                 toast.success("Login successful");
-                navigate("/");
+                navigate("/")
             }
         } catch (err) {
             const error = err as IError;
             console.log("Error data:", error.data);
+            if (error.data?.message === "You are not Verified") {
+                navigate("/verify-otp", {
+                    state: { email: data?.email },
+                });
+            }
             toast.error(error.data?.message || "Login failed");
         }
     };
@@ -121,7 +127,12 @@ const Login = () => {
                             </div>
 
                             <Button type="submit" className="w-full">
-                                Sign In
+                                {isLoading ? (
+                                    <Loader2 className="animate-spin mr-2 h-4 w-4 inline-block" />
+                                ) : (
+                                    "Sign In"
+                                )}
+
                             </Button>
 
                             <div className="text-center text-sm">

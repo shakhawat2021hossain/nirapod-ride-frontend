@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 const AvailableRides = () => {
     const { data: availableRidesData, isLoading, error, refetch } = useAvailableRidesQuery(undefined);
     const [acceptRide] = useAcceptRideMutation();
+    console.log("avail rides err", error)
     const navigate = useNavigate()
     const availableRides = availableRidesData?.data || [];
 

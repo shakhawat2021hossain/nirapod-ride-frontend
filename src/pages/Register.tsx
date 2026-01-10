@@ -26,11 +26,12 @@ import toast from "react-hot-toast";
 import type { IError } from "@/types";
 import { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { Loader2 } from "lucide-react";
 
 
 
 const Register = () => {
-    const [register] = useRegisterMutation();
+    const [register, { isLoading }] = useRegisterMutation();
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false)
@@ -57,7 +58,11 @@ const Register = () => {
             if (result.success) {
                 toast.success("Registration successful");
                 toast.success("Please login to continue");
-                navigate("/login");
+                // navigate("/login");
+                navigate("/verify-otp", {
+                    state: { email: data?.email },
+                });
+
             }
         }
         catch (err) {
@@ -66,6 +71,7 @@ const Register = () => {
             toast.error(error.data?.message || "Login failed");
         }
     };
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
@@ -201,7 +207,18 @@ const Register = () => {
                                 )}
                             /> */}
 
-                            <Button type="submit" className="w-full">Sign Up as Rider</Button>
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <Loader2 className="animate-spin mr-2 h-4 w-4 inline-block" />
+                                ) : (
+                                    "Become A Rider"
+                                )}
+
+                            </Button>
 
                             <div className="text-center text-sm">
                                 Already have an account?{" "}

@@ -17,6 +17,7 @@ import NotFound from "@/pages/NotFound";
 import RoleBasedAccess from "./RoleBasedAccess";
 import { roles } from "@/constants/role";
 import Profile from "@/pages/Common/Profile";
+import OtpVerification from "@/pages/Auth/OtpVerification";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
     {
         path: '/register',
         element: <Register />
+    },
+    {
+        path: '/verify-otp',
+        element: <OtpVerification />
     },
     {
         path: '/login',

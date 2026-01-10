@@ -21,10 +21,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { authApi, useLogOutMutation } from "@/redux/features/auth/auth.api";
 import { useDispatch } from "react-redux";
-import { toast } from "sonner";
 import { NavLink } from "react-router-dom";
 import { roles } from "@/constants/role";
 import { useUserInfoQuery } from "@/redux/features/user/user.api";
+import toast from "react-hot-toast";
 
 type userProps = {
   name: string;

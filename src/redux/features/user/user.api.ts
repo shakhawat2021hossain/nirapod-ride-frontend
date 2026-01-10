@@ -40,7 +40,8 @@ export const userApi = baseApi.injectEndpoints({
                 url: "/user/become-driver",
                 method: "PATCH",
                 data: payload
-            })
+            }),
+            invalidatesTags: ["USER"]
         }),
         updateUser: build.mutation({
             query: ({ id, payload }) => ({
@@ -55,6 +56,7 @@ export const userApi = baseApi.injectEndpoints({
                 url: `/user/driver-request/${id}/approve?status=${status}`,
                 method: "PATCH"
             }),
+            invalidatesTags: ["USER"]
         }),
         blockUser: build.mutation({
             query: (id) => ({
