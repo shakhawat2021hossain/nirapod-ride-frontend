@@ -1,6 +1,7 @@
 # 🚖 Nirapord Ride (A Ride Management System)
 
 ### 🔗 Live Deployment: https://nirapod-ride-frontend.vercel.app/  
+### 🔗 Totla Wrokflow video Explanation:  https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing
 
 ---
 
@@ -96,4 +97,21 @@ Enhances user safety by allowing riders and drivers to **quickly call for help**
 
 ---
 
-## ⚙️ Setup Instructions
+## 🔐 Login Credentials
+
+Use the following demo accounts to explore the website:
+
+**Admin Account**  
+📧 Email: `admin@nirapod-ride.com`  
+🔑 Password: `HelloWorld`  
+
+**Rider Account**  
+📧 Email: `rider@ride.com`  
+🔑 Password: `123456`  
+
+**Driver Account**  
+📧 Email: `driver@ride.com`  
+🔑 Password: `123456`  
+
+> ⚠️ These credentials are for testing and demonstration purposes only.
+
