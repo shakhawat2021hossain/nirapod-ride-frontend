@@ -1,7 +1,7 @@
 # 🚖 Nirapord Ride (A Ride Management System)
 
 ### 🔗 Live Deployment: https://nirapod-ride-frontend.vercel.app/  
-### 🔗 Totla Wrokflow video Explanation:  https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing
+### 🔗 Total Wrokflow video Explanation:  https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing
 
 ---
 
@@ -27,6 +27,7 @@ This project focuses on building a **production-grade frontend** using **React, 
 ### 👤 Authentication & Authorization
 - **JWT-based authentication**
 - **Role-based login & registration** for Rider, Driver, and Admin
+- **Forgot Password & Reset Password** implemented through OTP verification
 - Role-based **dashboard redirects** after login
 - **Persistent login state**
 - Blocked/Suspended account redirection
