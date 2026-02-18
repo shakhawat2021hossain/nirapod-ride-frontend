@@ -1,106 +1,119 @@
-# 🚖 Nirapord Ride (A Ride Management System)
-
-### 🔗 Live Deployment: https://nirapod-ride-frontend.vercel.app/  
-### 🔗 Total Wrokflow video Explanation:  https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing
+# 🚖 Nirapord Ride
+**A Role-Based Ride Management Platform Inspired by Uber & Pathao**
 
 ---
 
-## 🧭 Project Overview
-
-**Ride Management System** is a fully responsive, role-based ride booking platform inspired by Uber and Pathao.  
-It allows **Riders**, **Drivers**, and **Admins** to seamlessly interact through a clean and intuitive interface — from booking rides to managing operations and analyzing ride data.
-
-This project focuses on building a **production-grade frontend** using **React, Redux Toolkit, and RTK Query**, ensuring efficient state management, secure authentication, and smooth user experience across all devices.
+## 🌟 Overview
+Nirapord Ride is a modern, fully responsive ride management system that connects **Riders**, **Drivers**, and **Admins** seamlessly. It provides real-time ride booking, tracking, and management while ensuring security and a smooth user experience across devices.
 
 ---
 
-## ✨ Core Features
+## 🎯 Why This Project?
+Managing rides and users efficiently can be challenging. Most platforms struggle with:  
+- Role-based access and dashboards  
+- Real-time ride updates and status tracking  
+- Analytics for operational insights  
+- Safety features like emergency support  
 
-### 🌍 Public Experience
-- Beautiful landing page with **5+ structured sections** (Hero, Features, Testimonials, FAQ, etc.)
-- **About Us**, **Features**, **Contact**, and **FAQ** pages
-- Responsive **navbar** and **footer** with consistent design
-- Accessibility and performance optimized (lazy-loading + skeleton loaders)
-
----
-
-### 👤 Authentication & Authorization
-- **JWT-based authentication**
-- **Role-based login & registration** for Rider, Driver, and Admin
-- **Forgot Password & Reset Password** implemented through OTP verification
-- Role-based **dashboard redirects** after login
-- **Persistent login state**
-- Blocked/Suspended account redirection
-- Logout functionality
+Nirapord Ride addresses these challenges with a clean, intuitive interface and robust functionality.
 
 ---
+
+## 🧩 Core Features
+
+### 🌍 Public Pages
+- Responsive landing page with **Hero, Features, Testimonials, FAQ**  
+- About, Features, Contact, and FAQ sections  
+- Accessible navbar and footer with consistent design  
+- Lazy-loading, skeleton loaders, and performance optimization  
+
+### 👤 Authentication & User Access
+- JWT-based login and registration  
+- Role-based dashboards: **Rider**, **Driver**, **Admin**  
+- Forgot and Reset password via OTP verification  
+- Persistent login and blocked account handling  
+- Role-based redirection and logout functionality  
 
 ### 🚗 Rider Dashboard
-- **Request Ride:** Pickup, destination, fare estimate, payment selection  
-- **Ride History:** Paginated, searchable, and filterable  
-- **Ride Details:** timestamps, and driver info  
-- **Profile Management:** Edit name, phone, and change password 
-
----
+- Request rides with pickup, destination, fare estimate, and payment  
+- Ride history with pagination, search, and filters  
+- Detailed ride info with timestamps and driver details  
+- Profile management: name, phone, and password updates  
 
 ### 🧍‍♂️ Driver Dashboard
-- **Online/Offline toggle** (to control ride availability)  
-- **Incoming Ride Requests:** Accept or reject rides  
-- **Active Ride Management:** Track status – *Accepted → Picked Up → In Transit → Completed*  
-- **Earnings Dashboard:** Charts and visual data (daily, weekly, monthly)  
-- **Ride History:** Paginated and filterable  
-- **Profile Management:** Update vehicle info and password  
-
----
+- Online/Offline toggle to control availability  
+- Accept or reject ride requests  
+- Active ride tracking: *Accepted → Picked Up → In Transit → Completed*  
+- Earnings dashboard with charts (daily, weekly, monthly)  
+- Ride history and profile management  
 
 ### 🛠️ Admin Dashboard
-- **User Management:** Search, filter, block/unblock riders, approve/suspend drivers  
-- **Ride Oversight:** View and filter all rides by date, status, or user  
-- **Analytics Dashboard:** Charts showing ride volume, revenue, and driver activity  
-- **Profile Management:** Update profile and password  
-- **Global Search & Filter tools**  
+- Manage users: search, filter, block/unblock riders, approve/suspend drivers  
+- Ride oversight: filter by date, status, or user  
+- Analytics dashboard: ride volume, revenue, driver activity  
+- Profile management and global search tools  
 
----
+### 🆘 SOS / Emergency System
+- Floating **SOS button** during active rides  
+- Emergency options: call police, notify contacts, share live location  
+- Pre-set emergency contacts in user settings  
+- Visual confirmation of alerts  
 
-### 🆘 SOS / Emergency System 
-Enhances user safety by allowing riders and drivers to **quickly call for help** during active rides.
-
-- Floating **SOS button** visible only during rides  
-- **Emergency Options:** Call police, notify contacts, share live location  
-- **Pre-set Emergency Contact** in user settings  
-- **Automatic location sharing** via map API or messaging (WhatsApp, SMS)  
-- **Visual feedback** confirmation (“Emergency contact notified!”)
-
----
-
-### 💎 General UI/UX Enhancements
-- Role-based navigation and profile dropdown  
-- Interactive carousels, cards, and charts  
-- Smooth transitions, skeleton loaders, and global error handling  
+### 💎 UI/UX Enhancements
+- Role-based navigation and profile dropdowns  
+- Interactive carousels, charts, and cards  
+- Smooth transitions, skeleton loaders, and toast notifications  
 - Accessibility-compliant and semantic HTML  
-- No broken links or placeholder text  
-- **Toast notifications** for success/error using `react-hot-toast`  
-- Lazy-loaded maps and charts  
 
 ---
 
-## 🧩 Technology Stack
+## 🛠️ Technology Stack
 
 | Category | Tools / Libraries |
-|-----------|-------------------|
-| **Frontend Framework** | React.js (with React Router) |
+|----------|------------------|
+| **Frontend** | React.js, TypeScript, React Router |
 | **State Management** | Redux Toolkit, RTK Query |
-| **Language** | TypeScript |
 | **Styling** | Tailwind CSS, ShadCN |
 | **Charts & Visualization** | Recharts |
-| **Authentication** | JWT + bcrypt (via backend) |
+| **Authentication** | JWT, bcrypt |
 | **Backend (API)** | Node.js, Express.js, MongoDB |
 
 ---
 
-## 🔐 Login Credentials
+## 🎬 Screenshots / Demo
+![Landing Page](./screenshots/landing-page.png)  
+![Rider Dashboard](./screenshots/rider-dashboard.png)  
+![Driver Dashboard](./screenshots/driver-dashboard.png)  
+![Admin Dashboard](./screenshots/admin-dashboard.png)  
 
-Use the following demo accounts to explore the website:
+> Full workflow video: [Click Here](https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing)
+
+---
+
+## ⚙️ Getting Started
+
+### Clone the repository
+```bash
+git clone https://github.com/yourusername/nirapord-ride.git
+cd nirapord-ride
+```
+### Install dependencies
+```bash
+npm install
+```
+### Run locally
+```
+npm run dev
+```
+
+---
+
+## 🌐 Live Demo
+🔗 Frontend: https://nirapod-ride-frontend.vercel.app/  
+🎥 Full Workflow Video: https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing  
+
+### 🔐 Demo Credentials
+Use the following demo accounts to explore different roles:
 
 **Admin Account**  
 📧 Email: `admin@nirapod-ride.com`  
@@ -114,5 +127,5 @@ Use the following demo accounts to explore the website:
 📧 Email: `driver@ride.com`  
 🔑 Password: `123456`  
 
-> ⚠️ These credentials are for testing and demonstration purposes only.
-
+> ⚠️ These credentials are for testing and demonstration purposes only.  
+> Please avoid changing sensitive account information.
