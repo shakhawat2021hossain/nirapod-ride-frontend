@@ -80,11 +80,7 @@ Nirapord Ride addresses these challenges with a clean, intuitive interface and r
 
 ---
 
-## 🎬 Screenshots / Demo
-![Landing Page](./screenshots/landing-page.png)  
-![Rider Dashboard](./screenshots/rider-dashboard.png)  
-![Driver Dashboard](./screenshots/driver-dashboard.png)  
-![Admin Dashboard](./screenshots/admin-dashboard.png)  
+## 🎬 Demo
 
 > Full workflow video: [Click Here](https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing)
 
@@ -94,7 +90,7 @@ Nirapord Ride addresses these challenges with a clean, intuitive interface and r
 
 ### Clone the repository
 ```bash
-git clone https://github.com/yourusername/nirapord-ride.git
+git clone https://github.com/yourusername/nirapord-ride-frontend.git
 cd nirapord-ride
 ```
 ### Install dependencies
