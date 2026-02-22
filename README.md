@@ -80,12 +80,6 @@ Nirapord Ride addresses these challenges with a clean, intuitive interface and r
 
 ---
 
-## 🎬 Demo
-
-> Full workflow video: [Click Here](https://drive.google.com/file/d/12VkH2RqS2D_MuDPooIidaAoI47ybb_sW/view?usp=sharing)
-
----
-
 ## ⚙️ Getting Started
 
 ### Clone the repository
