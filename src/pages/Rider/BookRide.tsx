@@ -18,6 +18,7 @@ import { MapPin, Navigation, Clock, DollarSign, Car, CreditCard, Smartphone } fr
 import { useBookMutation } from "@/redux/features/rider/ride.api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { getDistance, getLatLong, type Coordinates } from "@/utils/getDistance";
 
 export default function BookRide() {
   const navigate = useNavigate()
@@ -26,6 +27,9 @@ export default function BookRide() {
   const [fare, setFare] = useState<number | null>(null);
   const [estimatedTime, setEstimatedTime] = useState<string>("");
   const [isCalculating, setIsCalculating] = useState(false);
+
+  const [distance, setDistance] = useState(0)
+
 
   const form = useForm<RideFormValues>({
     resolver: zodResolver(rideSchema),
@@ -36,6 +40,8 @@ export default function BookRide() {
     },
   });
 
+
+
   // Enhanced Fare Estimation with realistic calculation
   useEffect(() => {
     const { startLocation, endLocation } = form.getValues();
@@ -43,22 +49,38 @@ export default function BookRide() {
     if (startLocation && endLocation && startLocation.length > 3 && endLocation.length > 3) {
       setIsCalculating(true);
 
-      // Simulate API call delay
-      const timer = setTimeout(() => {
-        const baseFare = 60;
-        const distanceMultiplier = Math.floor(Math.random() * 40) + 20; // 20-60 Taka
-        const timeMultiplier = Math.floor(Math.random() * 20) + 10; // 10-30 Taka
-        const estimated = baseFare + distanceMultiplier + timeMultiplier;
+      const fetchDistance = async () => {
+        try {
 
-        setFare(estimated);
+          const measure = await getDistance(startLocation, endLocation);
+          const distance = measure.sources_to_targets[0][0].distance
+          // console.log("measured distance:", measure.sources_to_targets[0][0].distance);
 
-        // Estimate time (5-25 minutes)
-        const time = Math.floor(Math.random() * 20) + 5;
-        setEstimatedTime(`${time} min`);
-        setIsCalculating(false);
-      }, 1000);
+          return distance
+        } catch (err) {
+          console.error("getDistance error", err);
+        }
+      };
 
-      return () => clearTimeout(timer);
+      const getFare = async () => {
+        const meters = await fetchDistance()
+        const distanceKM = meters / 1000
+        const estimated = distanceKM * 15 // per km 15 taka
+
+        const timer = setTimeout(() => {
+          setDistance(Number(distanceKM.toFixed(2)))
+          setFare(Number(estimated.toFixed(2)));
+
+          // Estimate time (5-25 minutes)
+          const time = Math.floor(Math.random() * 20) + 5;
+          setEstimatedTime(`${time} min`);
+          setIsCalculating(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+
+      }
+      getFare()
+
     } else {
       setFare(null);
       setEstimatedTime("");
@@ -66,11 +88,13 @@ export default function BookRide() {
   }, [form.watch('startLocation'), form.watch('endLocation')]);
 
   const onSubmit = async (data: RideFormValues) => {
+
     try {
       const rideBody = {
         ...data,
         fare,
       };
+
 
       // console.log("Sending ride body:", rideBody);
 
@@ -88,6 +112,7 @@ export default function BookRide() {
       toast.error("Failed to book ride");
     }
   };
+
 
 
 
@@ -140,6 +165,7 @@ export default function BookRide() {
             </CardHeader>
 
             <CardContent className="space-y-6">
+
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
@@ -202,7 +228,19 @@ export default function BookRide() {
                         <div className="w-2 h-2 bg-primary rounded-full"></div>
                         <h3 className="font-semibold text-lg">Ride Details</h3>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="text-center">
+                          <div className="text-sm text-muted-foreground mb-2">Estimated Distance</div>
+                          <div className="text-3xl font-bold text-primary">
+                            {isCalculating ? (
+                              <div className="flex items-center justify-center gap-2">
+                                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                              </div>
+                            ) : (
+                              `${distance} km`
+                            )}
+                          </div>
+                        </div>
                         <div className="text-center">
                           <div className="text-sm text-muted-foreground mb-2">Estimated Fare</div>
                           <div className="text-3xl font-bold text-primary">
@@ -211,7 +249,7 @@ export default function BookRide() {
                                 <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                               </div>
                             ) : (
-                              `৳${fare}`
+                              `৳ ${fare}`
                             )}
                           </div>
                         </div>

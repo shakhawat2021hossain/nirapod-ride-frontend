@@ -18,6 +18,7 @@ import RoleBasedAccess from "./RoleBasedAccess";
 import { roles } from "@/constants/role";
 import Profile from "@/pages/Common/Profile";
 import OtpVerification from "@/pages/Auth/OtpVerification";
+import FareEstimator from "@/pages/Fare";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
     {
         path: '/login',
         element: <Login />
+    },
+    {
+        path: "/fare",
+        element: <FareEstimator />,
     },
     {
         path: "*",

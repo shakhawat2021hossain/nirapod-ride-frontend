@@ -28,7 +28,7 @@ const Login = () => {
     });
 
     const onSubmit = async (data: LoginFormData) => {
-        console.log("Login data:", data);
+        // console.log("Login data:", data);
 
         try {
             const result = await login(data).unwrap();
@@ -40,7 +40,7 @@ const Login = () => {
             }
         } catch (err) {
             const error = err as IError;
-            console.log("Error data:", error.data);
+            // console.log("Error data:", error.data);
             if (error.data?.message === "You are not Verified") {
                 navigate("/verify-otp", {
                     state: { email: data?.email },

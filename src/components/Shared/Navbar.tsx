@@ -29,7 +29,7 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data: userInfo } = useUserInfoQuery(undefined)
-  console.log(userInfo)
+  // console.log(userInfo)
   const userEmail = userInfo?.email;
 
   return (
