@@ -18,7 +18,7 @@ import { MapPin, Navigation, Clock, DollarSign, Car, CreditCard, Smartphone } fr
 import { useBookMutation } from "@/redux/features/rider/ride.api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { getDistance, getLatLong, type Coordinates } from "@/utils/getDistance";
+import { getDistance } from "@/utils/getDistance";
 
 export default function BookRide() {
   const navigate = useNavigate()
