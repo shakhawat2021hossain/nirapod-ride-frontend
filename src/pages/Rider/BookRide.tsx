@@ -19,6 +19,7 @@ import { useBookMutation } from "@/redux/features/rider/ride.api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { getDistance } from "@/utils/getDistance";
+import type { IError } from "@/types";
 
 export default function BookRide() {
   const navigate = useNavigate()
@@ -29,6 +30,9 @@ export default function BookRide() {
   const [isCalculating, setIsCalculating] = useState(false);
 
   const [distance, setDistance] = useState(0)
+
+  // wizard step: 1=locations, 2=details, 3=payment
+  const [step, setStep] = useState(1);
 
 
   const form = useForm<RideFormValues>({
@@ -107,9 +111,9 @@ export default function BookRide() {
       form.reset();
       setFare(null);
       setEstimatedTime("");
-    } catch (error) {
-      console.error("Booking ride failed:", error);
-      toast.error("Failed to book ride");
+    } catch (error: any) {
+      console.error("Booking ride failed:", error.data.message);
+      toast.error(error.data.message || "Failed to book ride");
     }
   };
 
@@ -165,177 +169,207 @@ export default function BookRide() {
             </CardHeader>
 
             <CardContent className="space-y-6">
-
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  {/* wizard steps */}
+                  {step === 1 && (
+                    <>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <h3 className="font-semibold text-lg">Location Details</h3>
+                        </div>
 
-                  {/* Location Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <h3 className="font-semibold text-lg">Location Details</h3>
-                    </div>
-
-                    {/* Pickup Location */}
-                    <FormField
-                      control={form.control}
-                      name="startLocation"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2 text-base font-medium">
-                            <MapPin className="h-5 w-5 text-green-500" />
-                            Pickup Location
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Enter your pickup address"
-                              {...field}
-                              className="h-14 text-lg px-4"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Destination */}
-                    <FormField
-                      control={form.control}
-                      name="endLocation"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2 text-base font-medium">
-                            <Navigation className="h-5 w-5 text-primary" />
-                            Destination
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Where are you going?"
-                              {...field}
-                              className="h-14 text-lg px-4"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  {/* Fare & Time Estimation */}
-                  {(fare || isCalculating) && (
-                    <div className="bg-gradient-to-r from-primary/10 to-purple-600/10 rounded-xl p-6 border border-primary/20">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <h3 className="font-semibold text-lg">Ride Details</h3>
+                        {/* Pickup */}
+                        <FormField
+                          control={form.control}
+                          name="startLocation"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="flex items-center gap-2 text-base font-medium">
+                                <MapPin className="h-5 w-5 text-green-500" />
+                                Pickup Location
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Enter your pickup address"
+                                  {...field}
+                                  className="h-14 text-lg px-4"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        {/* Destination */}
+                        <FormField
+                          control={form.control}
+                          name="endLocation"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="flex items-center gap-2 text-base font-medium">
+                                <Navigation className="h-5 w-5 text-primary" />
+                                Destination
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Where are you going?"
+                                  {...field}
+                                  className="h-14 text-lg px-4"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </div>
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="text-center">
-                          <div className="text-sm text-muted-foreground mb-2">Estimated Distance</div>
-                          <div className="text-3xl font-bold text-primary">
-                            {isCalculating ? (
-                              <div className="flex items-center justify-center gap-2">
-                                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                              </div>
-                            ) : (
-                              `${distance} km`
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-sm text-muted-foreground mb-2">Estimated Fare</div>
-                          <div className="text-3xl font-bold text-primary">
-                            {isCalculating ? (
-                              <div className="flex items-center justify-center gap-2">
-                                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                              </div>
-                            ) : (
-                              `৳ ${fare}`
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-sm text-muted-foreground mb-2">Estimated Time</div>
-                          <div className="text-2xl font-bold flex items-center justify-center gap-2">
-                            <Clock className="h-5 w-5 text-primary" />
-                            {estimatedTime}
-                          </div>
-                        </div>
+                      <div className="flex justify-end pt-4">
+                        <Button
+                          type="button"
+                          disabled={!form.getValues().startLocation || !form.getValues().endLocation}
+                          onClick={() => {
+                            form.trigger(["startLocation", "endLocation"]).then(ok => {
+                              if (ok) setStep(2);
+                            });
+                          }}
+                          className="min-w-[100px]"
+                        >
+                          Next
+                        </Button>
                       </div>
-                    </div>
+                    </>
                   )}
 
-                  {/* Payment Method */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <h3 className="font-semibold text-lg">Payment Method</h3>
-                    </div>
-
-                    <FormField
-                      control={form.control}
-                      name="payment"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              className="grid grid-cols-3 gap-3"
-                            >
-                              {paymentMethods.map((method) => {
-                                const IconComponent = method.icon;
-                                const isSelected = field.value === method.value;
-
-                                return (
-                                  <div key={method.value}>
-                                    <RadioGroupItem value={method.value} id={method.value} className="sr-only" />
-                                    <FormLabel
-                                      htmlFor={method.value}
-                                      className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all h-full ${isSelected
-                                        ? 'border-primary bg-primary/5 shadow-md'
-                                        : 'border-muted hover:border-muted-foreground/30 hover:bg-muted/50'
-                                        }`}
-                                    >
-                                      <div className={`p-3 rounded-lg mb-2 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                                        }`}>
-                                        <IconComponent className="h-6 w-6" />
-                                      </div>
-                                      <div className="text-center">
-                                        <div className="font-semibold text-sm">{method.label}</div>
-                                        <div className="text-xs text-muted-foreground mt-1">{method.description}</div>
-                                      </div>
-                                    </FormLabel>
-                                  </div>
-                                );
-                              })}
-                            </RadioGroup>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <div className="pt-4">
-                    <Button
-                      type="submit"
-                      disabled={!form.formState.isValid || isCalculating}
-                      className="w-full py-7 text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg hover:shadow-xl transition-all"
-                    >
-                      {isCalculating ? (
-                        <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          Calculating Fare...
+                  {step === 2 && (
+                    <>
+                      <div className="bg-gradient-to-r from-primary/10 to-purple-600/10 rounded-xl p-6 border border-primary/20">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <h3 className="font-semibold text-lg">Ride Details</h3>
                         </div>
-                      ) : (
-                        <div className="flex items-center justify-center gap-3">
-                          <Car className="h-5 w-5" />
-                          {fare ? `Book Ride - ৳${fare}` : 'Get Fare Estimate'}
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="text-center">
+                            <div className="text-sm text-muted-foreground mb-2">Estimated Distance</div>
+                            <div className="text-3xl font-bold text-primary">
+                              {isCalculating ? (
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                              ) : (
+                                `${distance} km`
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-sm text-muted-foreground mb-2">Estimated Fare</div>
+                            <div className="text-3xl font-bold text-primary">
+                              {isCalculating ? (
+                                <div className="flex items-center justify-center gap-2">
+                                  <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                              ) : (
+                                `৳ ${fare}`
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-sm text-muted-foreground mb-2">Estimated Time</div>
+                            <div className="text-2xl font-bold flex items-center justify-center gap-2">
+                              <Clock className="h-5 w-5 text-primary" />
+                              {estimatedTime}
+                            </div>
+                          </div>
                         </div>
-                      )}
-                    </Button>
-                  </div>
+                      </div>
+                      <div className="flex justify-between pt-4">
+                        <Button type="button" variant="outline" onClick={() => setStep(1)} className="min-w-[100px]">
+                          Back
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={isCalculating || fare === null}
+                          onClick={() => setStep(3)}
+                          className="min-w-[100px]"
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </>
+                  )}
+
+                  {step === 3 && (
+                    <>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <h3 className="font-semibold text-lg">Payment Method</h3>
+                        </div>
+                        <FormField
+                          control={form.control}
+                          name="payment"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                  className="grid grid-cols-3 gap-3"
+                                >
+                                  {paymentMethods.map(method => {
+                                    const IconComponent = method.icon;
+                                    const isSelected = field.value === method.value;
+                                    return (
+                                      <div key={method.value}>
+                                        <RadioGroupItem value={method.value} id={method.value} className="sr-only" />
+                                        <FormLabel
+                                          htmlFor={method.value}
+                                          className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all h-full ${isSelected
+                                              ? 'border-primary bg-primary/5 shadow-md'
+                                              : 'border-muted hover:border-muted-foreground/30 hover:bg-muted/50'
+                                            }`}
+                                        >
+                                          <div className={`p-3 rounded-lg mb-2 ${isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                                            <IconComponent className="h-6 w-6" />
+                                          </div>
+                                          <div className="text-center">
+                                            <div className="font-semibold text-sm">{method.label}</div>
+                                            <div className="text-xs text-muted-foreground mt-1">{method.description}</div>
+                                          </div>
+                                        </FormLabel>
+                                      </div>
+                                    );
+                                  })}
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex justify-between pt-4 gap-4">
+                        <Button type="button" variant="outline" onClick={() => setStep(2)} className="min-w-[100px]">
+                          Back
+                        </Button>
+                        <Button
+                          type="submit"
+                          disabled={isCalculating}
+                          className="flex-1 font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg hover:shadow-xl transition-all"
+                        >
+                          {isCalculating ? (
+                            <div className="flex items-center justify-center gap-3">
+                              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              Calculating Fare...
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center gap-3">
+                              <Car className="h-5 w-5" />
+                              {fare ? `Book Ride - ৳${fare}` : 'Book Ride'}
+                            </div>
+                          )}
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </form>
               </Form>
             </CardContent>
