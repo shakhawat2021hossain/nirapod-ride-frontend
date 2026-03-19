@@ -104,7 +104,7 @@ export default function BookRide() {
 
       const result = await book(rideBody).unwrap();
       // console.log("Ride booked successfully:", result);
-      navigate('/')
+      navigate('/rider/ride-tracking')
 
       toast.success(result?.data?.message || "Ride Booked Successfully");
       toast.success("Wait for the rider...");

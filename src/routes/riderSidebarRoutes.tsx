@@ -1,11 +1,12 @@
 
 import MyRides from "@/pages/Rider/MyRides";
 import RiderOverview from "@/pages/Rider/RiderOverview";
+import RideTracking from "@/pages/Rider/RideTracking";
 import type { ISidebarItem } from "@/types";
-import {Car, LayoutDashboard } from "lucide-react";
-import { lazy } from "react";
+import {Car, LayoutDashboard, Navigation } from "lucide-react";
+// import { lazy } from "react";
 
-const RideDetails = lazy(() =>import("@/pages/Rider/RideDetails"))
+// const RideDetails = lazy(() =>import("@/pages/Rider/RideDetails"))
 
 
 
@@ -24,9 +25,15 @@ export const riderSidebarRoutes: ISidebarItem[] = [
       icon: Car,
       element: <MyRides />
     },
+    // {
+    //   url: `/rider/rides/:id`,
+    //   element: <RideDetails />
+    // },
     {
-      url: `/rider/rides/:id`,
-      element: <RideDetails />
+      title: "Ride Tracking",
+      icon: Navigation,
+      url: `/rider/ride-tracking`,
+      element: <RideTracking />
     },
   ]
 

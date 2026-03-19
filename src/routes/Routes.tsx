@@ -19,6 +19,7 @@ import { roles } from "@/constants/role";
 import Profile from "@/pages/Common/Profile";
 import OtpVerification from "@/pages/Auth/OtpVerification";
 import FareEstimator from "@/pages/Fare";
+import RideDetails from "@/pages/Rider/RideDetails";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <Navigate to='/rider/overview' />
+            },
+            {
+                path: '/rider/rides/:id',
+                element: <RideDetails/>
             },
             ...generateRoutes(riderSidebarRoutes)
         ]
