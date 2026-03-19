@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 export const axiosInstance = axios.create({
-    baseURL: "https://nirapod-ride.vercel.app/api/v1",
-    // baseURL: "http://localhost:5000/api/v1",
+    // baseURL: "https://nirapod-ride.vercel.app/api/v1",
+    baseURL: "http://localhost:5000/api/v1",
     withCredentials: true,
 });
 
@@ -27,12 +27,18 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        console.log(error)
+        console.log("error", error)
+        
+        const orginalReq = error.config as AxiosRequestConfig;
+       
+        console.log("org", orginalReq)
+
         if (error.response.data.message === "jwt expired") {
             try {
                 console.log("jwt expired")
                 const res = await axiosInstance.post('/auth/refresh-token')
-                console.log(res, "xyz")
+                console.log("new token arrived", res)
+                return axiosInstance(orginalReq) // the failed request will be recalled, which prevent logout
             }
             catch (err) {
                 console.log("err on receiving new access token")
