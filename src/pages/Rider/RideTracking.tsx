@@ -151,7 +151,7 @@ const RideTracking = () => {
             <p className="text-muted-foreground">You don't have a ride in progress right now. Book a ride or view your ride history.</p>
             <div className="mt-4 flex gap-2">
               <Button onClick={() => navigate('/rider/my-rides')}>My Rides</Button>
-              <Button variant="outline" onClick={() => navigate('/rider/overview')}>Book Ride</Button>
+              <Button variant="outline" onClick={() => navigate('/book-ride')}>Book Ride</Button>
             </div>
           </CardContent>
         </Card>
